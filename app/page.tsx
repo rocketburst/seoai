@@ -1,39 +1,36 @@
 import Link from "next/link"
 
-import { siteConfig } from "@/config/site"
+import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button"
 
 export default function IndexPage() {
   return (
-    <section className="container grid items-center gap-6 pb-8 pt-6 md:py-10">
-      <div className="flex max-w-[980px] flex-col items-start gap-2">
-        <h1 className="text-3xl font-extrabold leading-tight tracking-tighter md:text-4xl">
-          Beautifully designed components <br className="hidden sm:inline" />
-          built with Radix UI and Tailwind CSS.
-        </h1>
-        <p className="max-w-[700px] text-lg text-muted-foreground">
-          Accessible and customizable components that you can copy and paste
-          into your apps. Free. Open Source. And Next.js 13 Ready.
-        </p>
-      </div>
-      <div className="flex gap-4">
-        <Link
-          href={siteConfig.links.docs}
-          target="_blank"
-          rel="noreferrer"
-          className={buttonVariants()}
-        >
-          Documentation
-        </Link>
-        <Link
-          target="_blank"
-          rel="noreferrer"
-          href={siteConfig.links.github}
-          className={buttonVariants({ variant: "outline" })}
-        >
-          GitHub
-        </Link>
-      </div>
-    </section>
+    <div className="flex flex-col items-center justify-center h-screen overflow-y-hidden">
+      <section className="space-y-6 -mt-40 md:-mt-36">
+        <div className="container flex max-w-[64rem] flex-col items-center gap-4 text-center">
+          <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold">
+            SEO: Made Simple, Done Right.
+          </h1>
+          <p className="max-w-[42rem] leading-normal text-muted-foreground sm:text-xl sm:leading-8">
+            Let the best AI in the game, GPT-4, handle the process of SEO for
+            you.
+          </p>
+          <div className="space-x-4">
+            <Link href="/login" className={cn(buttonVariants({ size: "lg" }))}>
+              Get Started
+            </Link>
+            <Link
+              href="/docs"
+              className={cn(
+                buttonVariants({ variant: "outline", size: "lg" }),
+                "cursor-pointer"
+              )}
+            >
+              Learn More
+            </Link>
+          </div>
+        </div>
+      </section>
+    </div>
   )
 }
