@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { useSearchParams } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
@@ -27,7 +26,6 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   })
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isGitHubLoading, setIsGitHubLoading] = useState<boolean>(false)
-  const searchParams = useSearchParams()
 
   const onSubmit = async (data: FormData) => {
     setIsLoading(true)
@@ -36,11 +34,12 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   return (
     <div className={cn("grid gap-6", className)} {...props}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="grid gap-2">
+        <div className="grid gap-2 space-y-2">
           <div className="grid gap-1">
-            <Label className="sr-only" htmlFor="email">
+            <Label className="text-gray-500" htmlFor="email">
               Email
             </Label>
+
             <Input
               id="email"
               placeholder="name@example.com"
@@ -58,11 +57,33 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
             )}
           </div>
 
+          <div className="grid gap-1">
+            <Label className="text-gray-500" htmlFor="password">
+              Password
+            </Label>
+
+            <Input
+              id="password"
+              placeholder="password"
+              type="password"
+              autoCapitalize="none"
+              autoCorrect="off"
+              disabled={isLoading || isGitHubLoading}
+              {...register("password")}
+            />
+
+            {errors?.email && (
+              <p className="px-1 text-xs text-red-600">
+                {errors.email.message}
+              </p>
+            )}
+          </div>
+
           <button className={cn(buttonVariants())} disabled={isLoading}>
             {isLoading && (
               <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
             )}
-            Sign In with Email
+            Sign In
           </button>
         </div>
       </form>
