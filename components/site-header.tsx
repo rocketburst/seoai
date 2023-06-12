@@ -3,12 +3,12 @@ import Link from "next/link"
 import { siteConfig } from "@/config/site"
 import { getCurrentUser } from "@/lib/session"
 import { cn } from "@/lib/utils"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { buttonVariants } from "@/components/ui/button"
 import { Icons } from "@/components/icons"
 import { MainNav } from "@/components/main-nav"
+import { MobileMenu } from "@/components/mobile-menu"
 import { ThemeToggle } from "@/components/theme-toggle"
-
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
 
 export async function SiteHeader() {
   const user = await getCurrentUser()
@@ -18,8 +18,8 @@ export async function SiteHeader() {
       <div className="container flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0">
         <MainNav items={siteConfig.mainNav} />
 
-        <div className="flex-1 items-center justify-end space-x-4 hidden md:flex">
-          <nav className="flex items-center space-x-1">
+        <div className="flex flex-1 items-center justify-end space-x-4">
+          <nav className="items-center space-x-1 hidden md:flex">
             {user ? (
               <div
                 className={cn(
@@ -59,6 +59,7 @@ export async function SiteHeader() {
                   variant: "ghost",
                 })}
               >
+                {/* TODO: add source code later */}
                 <Icons.gitHub className="h-5 w-5" />
                 <span className="sr-only">GitHub</span>
               </div>
@@ -66,6 +67,8 @@ export async function SiteHeader() {
 
             <ThemeToggle />
           </nav>
+
+          <MobileMenu user={user} />
         </div>
       </div>
     </header>
