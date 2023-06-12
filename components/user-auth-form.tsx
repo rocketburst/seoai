@@ -1,7 +1,9 @@
 "use client"
 
 import { useState } from "react"
+import { usePathname } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { signIn } from "next-auth/react"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
 
@@ -11,6 +13,8 @@ import { buttonVariants } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Icons } from "@/components/icons"
+
+import { toast } from "./ui/use-toast"
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -26,9 +30,38 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   })
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isGitHubLoading, setIsGitHubLoading] = useState<boolean>(false)
+  const path = usePathname()
 
-  const onSubmit = async (data: FormData) => {
+  async function onSubmit({ email, password }: FormData) {
     setIsLoading(true)
+
+    if (path === "/register") {
+      await fetch("/api/auth/register", {
+        method: "POST",
+        body: JSON.stringify({ email, password }),
+      }).then((res) => res.json())
+    }
+
+    const signInResult = await signIn("credentials", {
+      redirect: false,
+      email,
+      password,
+    })
+
+    setIsLoading(false)
+
+    if (!signInResult?.ok) {
+      return toast({
+        title: "Something went wrong.",
+        description: "Your sign in request failed. Please try again.",
+        variant: "destructive",
+      })
+    }
+
+    return toast({
+      title: "Check your email",
+      description: "We sent you a login link. Be sure to check your spam too.",
+    })
   }
 
   return (
