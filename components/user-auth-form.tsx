@@ -35,12 +35,11 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   async function onSubmit({ email, password }: FormData) {
     setIsLoading(true)
 
-    if (path === "/register") {
+    if (path === "/register")
       await fetch("/api/auth/register", {
         method: "POST",
         body: JSON.stringify({ email, password }),
       }).then((res) => res.json())
-    }
 
     const signInResult = await signIn("credentials", {
       redirect: false,
@@ -50,18 +49,12 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
 
     setIsLoading(false)
 
-    if (!signInResult?.ok) {
+    if (!signInResult?.ok)
       return toast({
         title: "Something went wrong.",
         description: "Your sign in request failed. Please try again.",
         variant: "destructive",
       })
-    }
-
-    return toast({
-      title: "Check your email",
-      description: "We sent you a login link. Be sure to check your spam too.",
-    })
   }
 
   return (
@@ -138,6 +131,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
         className={cn(buttonVariants({ variant: "outline" }))}
         onClick={() => {
           setIsGitHubLoading(true)
+          signIn("github")
         }}
         disabled={isLoading || isGitHubLoading}
       >
