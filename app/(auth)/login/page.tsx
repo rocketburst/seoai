@@ -4,7 +4,7 @@ import Link from "next/link"
 import { UserAuthForm } from "@/components/user-auth-form"
 
 export const metadata: Metadata = {
-  title: "Login",
+  title: "Login - SeoAI",
   description: "Login to your account",
 }
 
