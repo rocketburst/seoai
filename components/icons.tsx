@@ -1,4 +1,6 @@
 import {
+  FilePlus2,
+  Key,
   Loader2,
   LogIn,
   LogOut,
@@ -22,6 +24,8 @@ export const Icons = {
   logIn: LogIn,
   logOut: LogOut,
   user: User,
+  generate: FilePlus2,
+  api: Key,
   logo: (props: LucideProps) => (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" {...props}>
       <path

@@ -1,5 +1,6 @@
 "use client"
 
+import { useRouter } from "next/navigation"
 import { signOut } from "next-auth/react"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -16,20 +17,24 @@ interface HeaderAvatarProps {
 }
 
 export function HeaderAvatar({ img, name }: HeaderAvatarProps) {
-  return (
-    <TooltipProvider>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <Avatar>
-            <AvatarImage src={img} />
-            <AvatarFallback>{name ? "" : "JD"}</AvatarFallback>
-          </Avatar>
-        </TooltipTrigger>
+  const router = useRouter()
 
-        <TooltipContent onClick={() => signOut()}>
-          <p>Sign Out</p>
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
+  return (
+    <div onClick={() => router.push("/dashboard/profile")}>
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Avatar>
+              <AvatarImage src={img} />
+              <AvatarFallback>{name ? "" : "JD"}</AvatarFallback>
+            </Avatar>
+          </TooltipTrigger>
+
+          <TooltipContent onClick={() => signOut()}>
+            <p>Sign Out</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+    </div>
   )
 }
