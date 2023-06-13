@@ -1,19 +1,11 @@
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import { compare } from "bcryptjs"
-import { DefaultSession, NextAuthOptions } from "next-auth"
+import { NextAuthOptions } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
 import GithubProvider from "next-auth/providers/github"
 
 import { env } from "../env.mjs"
 import { db } from "./db"
-
-declare module "next-auth" {
-  interface Session extends DefaultSession {
-    user: {
-      id: string
-    } & DefaultSession["user"]
-  }
-}
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(db),
@@ -67,7 +59,7 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async session({ token, session }) {
       if (token) {
-        session.user.id = token.id as string
+        session.user.id = token.id
         session.user.name = token.name
         session.user.email = token.email
         session.user.image = token.picture
