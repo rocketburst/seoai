@@ -3,8 +3,8 @@ import Link from "next/link"
 import { siteConfig } from "@/config/site"
 import { getCurrentUser } from "@/lib/session"
 import { cn } from "@/lib/utils"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { buttonVariants } from "@/components/ui/button"
+import { HeaderAvatar } from "@/components/header-avatar"
 import { Icons } from "@/components/icons"
 import { MainNav } from "@/components/main-nav"
 import { MobileMenu } from "@/components/mobile-menu"
@@ -30,10 +30,10 @@ export async function SiteHeader() {
                   "hover:bg-inherit cursor-pointer"
                 )}
               >
-                <Avatar>
-                  <AvatarImage src={user.image as string} />
-                  <AvatarFallback>CN</AvatarFallback>
-                </Avatar>
+                <HeaderAvatar
+                  img={user.image as string}
+                  name={user.name as string}
+                />
               </div>
             ) : (
               <Link href="/login">

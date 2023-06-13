@@ -5,13 +5,13 @@ import { useTheme } from "next-themes"
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Icons } from "@/components/icons"
-import { ThemeToggle } from "@/components/theme-toggle"
 
 interface MobileMenuProps {
   user:
@@ -31,20 +31,54 @@ export function MobileMenu({ user }: MobileMenuProps) {
   return (
     <div className="md:hidden flex items-center justify-center">
       <DropdownMenu>
-        <DropdownMenuTrigger>
+        <DropdownMenuTrigger asChild>
           <Icons.menu />
         </DropdownMenuTrigger>
-        <DropdownMenuContent>
-          <DropdownMenuLabel>Settings</DropdownMenuLabel>
+
+        <DropdownMenuContent className="w-56">
+          <DropdownMenuLabel>
+            My Account{user?.name && `: ${user.name}`}
+          </DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuGroup>
+            {user && (
+              <DropdownMenuItem>
+                <Icons.user className="mr-2 h-4 w-4" />
+                <span>Profile</span>
+              </DropdownMenuItem>
+            )}
+
+            <DropdownMenuItem
+              onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+            >
+              {theme === "light" ? (
+                <Icons.sun classname="mr-2 h-4 w-4" />
+              ) : (
+                <Icons.moon className="mr-2 h-4 w-4" />
+              )}
+              <span>Change Theme</span>
+            </DropdownMenuItem>
+          </DropdownMenuGroup>
+
           <DropdownMenuSeparator />
 
-          <DropdownMenuItem>{user ? "Sign Out" : "Sign In"}</DropdownMenuItem>
-          {/* TODO: add source code later */}
-          <DropdownMenuItem>View Source</DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-          >
-            Change Theme
+          <DropdownMenuItem>
+            <Icons.gitHub className="mr-2 h-4 w-4" />
+            <span>Source Code</span>
+          </DropdownMenuItem>
+
+          <DropdownMenuItem>
+            {user ? (
+              <>
+                <Icons.logOut className="mr-2 h-4 w-4" />
+                <span>Sign Out</span>
+              </>
+            ) : (
+              <>
+                <Icons.logIn className="mr-2 h-4 w-4" />
+                <span>Sign In</span>
+              </>
+            )}
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

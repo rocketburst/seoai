@@ -1,10 +1,13 @@
 import {
   Loader2,
+  LogIn,
+  LogOut,
   LucideProps,
   Menu,
   Moon,
   SunMedium,
   Twitter,
+  User,
   type Icon as LucideIcon,
 } from "lucide-react"
 
@@ -16,6 +19,9 @@ export const Icons = {
   twitter: Twitter,
   spinner: Loader2,
   menu: Menu,
+  logIn: LogIn,
+  logOut: LogOut,
+  user: User,
   logo: (props: LucideProps) => (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" {...props}>
       <path
