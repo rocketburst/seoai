@@ -12,8 +12,7 @@ export default function IndexPage() {
             SEO: Made Simple, Done Right.
           </h1>
           <p className="max-w-[42rem] leading-normal text-muted-foreground sm:text-xl sm:leading-8">
-            Let the best AI in the game, GPT-4, handle the process of SEO for
-            you.
+            Maximize views on your blog with GPT-4. Right Here. Right Now.
           </p>
           <div className="space-x-4">
             <Link href="/login" className={cn(buttonVariants({ size: "lg" }))}>

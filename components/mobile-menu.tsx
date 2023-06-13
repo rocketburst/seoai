@@ -35,32 +35,45 @@ export function MobileMenu({ user }: MobileMenuProps) {
           <Icons.menu />
         </DropdownMenuTrigger>
 
-        <DropdownMenuContent className="w-56">
+        <DropdownMenuContent className="w-56 mr-3">
           <DropdownMenuLabel>
-            My Account{user?.name && `: ${user.name}`}
+            {user ? user.email : "My Account"}
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuGroup>
-            {user && (
-              <DropdownMenuItem>
-                <Icons.user className="mr-2 h-4 w-4" />
-                <span>Profile</span>
-              </DropdownMenuItem>
+
+          {user && (
+            <>
+              <DropdownMenuGroup>
+                <DropdownMenuItem>
+                  <Icons.user className="mr-2 h-4 w-4" />
+                  <span>Profile</span>
+                </DropdownMenuItem>
+
+                <DropdownMenuItem>
+                  <Icons.generate className="mr-2 h-4 w-4" />
+                  <span>Generate</span>
+                </DropdownMenuItem>
+
+                <DropdownMenuItem>
+                  <Icons.api className="mr-2 h-4 w-4" />
+                  <span>API Usage</span>
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
+
+              <DropdownMenuSeparator />
+            </>
+          )}
+
+          <DropdownMenuItem
+            onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+          >
+            {theme === "light" ? (
+              <Icons.sun classname="mr-2 h-4 w-4" />
+            ) : (
+              <Icons.moon className="mr-2 h-4 w-4" />
             )}
-
-            <DropdownMenuItem
-              onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-            >
-              {theme === "light" ? (
-                <Icons.sun classname="mr-2 h-4 w-4" />
-              ) : (
-                <Icons.moon className="mr-2 h-4 w-4" />
-              )}
-              <span>Change Theme</span>
-            </DropdownMenuItem>
-          </DropdownMenuGroup>
-
-          <DropdownMenuSeparator />
+            <span>Change Theme</span>
+          </DropdownMenuItem>
 
           <DropdownMenuItem>
             <Icons.gitHub className="mr-2 h-4 w-4" />
