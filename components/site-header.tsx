@@ -49,7 +49,7 @@ export async function SiteHeader() {
             )}
 
             <Link
-              href={siteConfig.links.github}
+              href="https://github.com/rocketburst/seoai"
               target="_blank"
               rel="noreferrer"
             >
@@ -59,7 +59,6 @@ export async function SiteHeader() {
                   variant: "ghost",
                 })}
               >
-                {/* TODO: add source code later */}
                 <Icons.gitHub className="h-5 w-5" />
                 <span className="sr-only">GitHub</span>
               </div>
