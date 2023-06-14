@@ -1,5 +1,7 @@
 "use client"
 
+import Link from "next/link"
+import { signOut } from "next-auth/react"
 import { useTheme } from "next-themes"
 
 import {
@@ -44,20 +46,26 @@ export function MobileMenu({ user }: MobileMenuProps) {
           {user && (
             <>
               <DropdownMenuGroup>
-                <DropdownMenuItem>
-                  <Icons.user className="mr-2 h-4 w-4" />
-                  <span>Profile</span>
-                </DropdownMenuItem>
+                <Link href="/dashboard/profile">
+                  <DropdownMenuItem>
+                    <Icons.user className="mr-2 h-4 w-4" />
+                    <span>Profile</span>
+                  </DropdownMenuItem>
+                </Link>
 
-                <DropdownMenuItem>
-                  <Icons.generate className="mr-2 h-4 w-4" />
-                  <span>Generate</span>
-                </DropdownMenuItem>
+                <Link href="/dashboard">
+                  <DropdownMenuItem>
+                    <Icons.generate className="mr-2 h-4 w-4" />
+                    <span>Generate</span>
+                  </DropdownMenuItem>
+                </Link>
 
-                <DropdownMenuItem>
-                  <Icons.api className="mr-2 h-4 w-4" />
-                  <span>API Usage</span>
-                </DropdownMenuItem>
+                <Link href="/usage">
+                  <DropdownMenuItem>
+                    <Icons.api className="mr-2 h-4 w-4" />
+                    <span>API Usage</span>
+                  </DropdownMenuItem>
+                </Link>
               </DropdownMenuGroup>
 
               <DropdownMenuSeparator />
@@ -75,24 +83,30 @@ export function MobileMenu({ user }: MobileMenuProps) {
             <span>Change Theme</span>
           </DropdownMenuItem>
 
-          <DropdownMenuItem>
-            <Icons.gitHub className="mr-2 h-4 w-4" />
-            <span>Source Code</span>
-          </DropdownMenuItem>
+          <Link
+            href="https://github.com/rocketburst/seoai"
+            rel="noreferrer"
+            target="_blank"
+          >
+            <DropdownMenuItem>
+              <Icons.gitHub className="mr-2 h-4 w-4" />
+              <span>Source Code</span>
+            </DropdownMenuItem>
+          </Link>
 
-          <DropdownMenuItem>
-            {user ? (
-              <>
-                <Icons.logOut className="mr-2 h-4 w-4" />
-                <span>Sign Out</span>
-              </>
-            ) : (
-              <>
+          {user ? (
+            <DropdownMenuItem onClick={() => signOut()}>
+              <Icons.logOut className="mr-2 h-4 w-4" />
+              <span>Sign Out</span>
+            </DropdownMenuItem>
+          ) : (
+            <Link href="/login">
+              <DropdownMenuItem>
                 <Icons.logIn className="mr-2 h-4 w-4" />
                 <span>Sign In</span>
-              </>
-            )}
-          </DropdownMenuItem>
+              </DropdownMenuItem>
+            </Link>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
