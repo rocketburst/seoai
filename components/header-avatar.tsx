@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation"
 import { signOut } from "next-auth/react"
 
+import { getInitials } from "@/lib/utils"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
   Tooltip,
@@ -26,7 +27,7 @@ export function HeaderAvatar({ img, name }: HeaderAvatarProps) {
           <TooltipTrigger asChild>
             <Avatar>
               <AvatarImage src={img} />
-              <AvatarFallback>{name ? "" : "JD"}</AvatarFallback>
+              <AvatarFallback>{name ? getInitials(name) : "JD"}</AvatarFallback>
             </Avatar>
           </TooltipTrigger>
 

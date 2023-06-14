@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { User } from "@prisma/client"
 import { useForm } from "react-hook-form"
@@ -19,6 +20,7 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { toast } from "@/components/ui/use-toast"
 import { Icons } from "@/components/icons"
 
 interface ProfileFormProps extends React.HTMLAttributes<HTMLFormElement> {
@@ -40,9 +42,34 @@ export function ProfileForm({ user, className, ...props }: ProfileFormProps) {
     },
   })
   const [isSaving, setIsSaving] = useState<boolean>(false)
+  const router = useRouter()
 
-  async function onSubmit(data: FormData) {
+  async function onSubmit({ name, email }: FormData) {
     setIsSaving(true)
+
+    const response = await fetch(`/api/users/${user.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ name, email }),
+    })
+
+    setIsSaving(false)
+
+    if (!response?.ok) {
+      return toast({
+        title: "Something went wrong.",
+        description: "Your name was not updated. Please try again.",
+        variant: "destructive",
+      })
+    }
+
+    toast({
+      description: "Your name has been updated.",
+    })
+
+    router.refresh()
   }
 
   return (
