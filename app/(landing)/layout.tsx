@@ -6,9 +6,9 @@ interface LandingLayoutProps {
 
 export default function LandingLayout({ children }: LandingLayoutProps) {
   return (
-    <>
+    <div className="flex min-h-screen flex-col">
       <SiteHeader />
-      {children}
-    </>
+      <main className="flex-1">{children}</main>
+    </div>
   )
 }

@@ -1,12 +1,12 @@
 import { DashboardHeader } from "@/components/dashboard-header"
 import { DashboardShell } from "@/components/shell"
 
-export default function DashboardPage() {
+export default function UsagePage() {
   return (
     <DashboardShell>
       <DashboardHeader
-        heading="Generate"
-        text="Generate a new blog post or SEO for an existing post."
+        heading="API Usage"
+        text="Get your API key to use our API endpoint here."
       />
     </DashboardShell>
   )
