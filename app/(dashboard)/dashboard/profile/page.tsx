@@ -18,14 +18,8 @@ export default async function ProfilePage() {
         text="Edit your profile information here."
       />
 
-      <section className="grid gap-10">
-        <ProfileForm
-          user={{
-            id: user.id,
-            name: user.name || "",
-            email: user.email || "",
-          }}
-        />
+      <section className="grid gap-10 pb-44 md:pb-0">
+        <ProfileForm user={user} />
       </section>
     </DashboardShell>
   )
