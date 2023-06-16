@@ -33,7 +33,7 @@ export function ProfileForm({ user }: ProfileFormProps) {
         </TabsContent>
 
         <TabsContent value="password">
-          <PasswordForm />
+          <PasswordForm userId={user.id} />
         </TabsContent>
       </Tabs>
     </section>
