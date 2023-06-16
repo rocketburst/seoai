@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { signIn } from "next-auth/react"
 import { useForm } from "react-hook-form"
@@ -30,6 +30,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isGitHubLoading, setIsGitHubLoading] = useState<boolean>(false)
   const path = usePathname()
+  const router = useRouter()
 
   async function onSubmit({ email, password }: FormData) {
     setIsLoading(true)
@@ -54,6 +55,12 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
         description: "Your sign in request failed. Please try again.",
         variant: "destructive",
       })
+
+    toast({
+      title: `Successfully signed in with ${email}`,
+    })
+
+    router.push("/dashboard")
   }
 
   return (
