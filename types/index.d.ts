@@ -14,3 +14,10 @@ export type SidebarNavItem = {
   icon: keyof typeof Icons
   href: string
 }
+
+export type ModalType = "seo" | "post"
+
+export type ModalContextType = {
+  changeModalVisibility: (modal: ModalType) => void
+  getModalState: (modal: ModalType) => boolean
+}

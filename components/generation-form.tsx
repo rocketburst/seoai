@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { useModal } from "@/contexts/modal"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
@@ -32,6 +33,7 @@ type SeoFormData = z.infer<typeof seoFormSchema>
 
 export function GenerationForm({ className, ...props }: GenerationFormProps) {
   const [isSeoLoading, setIsSeoLoading] = useState(false)
+  const { changeModalVisibility } = useModal()
 
   const seoForm = useForm<SeoFormData>({
     resolver: zodResolver(seoFormSchema),
@@ -54,7 +56,10 @@ export function GenerationForm({ className, ...props }: GenerationFormProps) {
     // }).then((res) => res.json())
     // console.log(message)
 
-    setIsSeoLoading(false)
+    setTimeout(() => {
+      setIsSeoLoading(false)
+      changeModalVisibility("seo")
+    }, 2000)
   }
 
   return (
