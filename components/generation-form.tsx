@@ -1,3 +1,10 @@
+"use client"
+
+import { useState } from "react"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import * as z from "zod"
+
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -11,10 +18,45 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Textarea } from "@/components/ui/textarea"
+import { Icons } from "@/components/icons"
 
 interface GenerationFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
+const seoFormSchema = z.object({
+  post: z.string().min(20, {
+    message: "Post must be at least 20 characters",
+  }),
+})
+
+type SeoFormData = z.infer<typeof seoFormSchema>
+
 export function GenerationForm({ className, ...props }: GenerationFormProps) {
+  const [isSeoLoading, setIsSeoLoading] = useState(false)
+
+  const seoForm = useForm<SeoFormData>({
+    resolver: zodResolver(seoFormSchema),
+    defaultValues: { post: "" },
+  })
+
+  const message = `
+    Here are the SEO specifications you wanted:
+
+  Title: How to Build a Modal Using Tailwind CSS and Headless UI Library
+  Description: Learn how to create and use modals in web applications using Tailwind CSS and Headless UI library. Follow our step-by-step guide to build your own modal and improve your web app's user experience.
+  Tags: Tailwind CSS, Headless UI, modals, web applications, user experience, web development, front-end development`
+
+  async function onSeoFormSubmit({ post }: SeoFormData) {
+    setIsSeoLoading(true)
+
+    // const { message }: { message: string } = await fetch("/api/generate/seo", {
+    //   method: "POST",
+    //   body: JSON.stringify({ post }),
+    // }).then((res) => res.json())
+    // console.log(message)
+
+    setIsSeoLoading(false)
+  }
+
   return (
     <section className={className} {...props}>
       <Tabs defaultValue="seo" className="max-w-[460px]">
@@ -24,26 +66,41 @@ export function GenerationForm({ className, ...props }: GenerationFormProps) {
         </TabsList>
 
         <TabsContent value="seo">
-          <Card>
-            <CardHeader>
-              <CardTitle>Generate New SEO for Post</CardTitle>
-              <CardDescription>
-                Paste your post content here, then click generate to create SEO
-                optimized meta tags
-              </CardDescription>
-            </CardHeader>
+          <form onSubmit={seoForm.handleSubmit(onSeoFormSubmit)}>
+            <Card>
+              <CardHeader>
+                <CardTitle>Generate New SEO for Post</CardTitle>
+                <CardDescription>
+                  Paste your post content here, then click generate to create
+                  SEO optimized tags for your blog post.
+                </CardDescription>
+              </CardHeader>
 
-            <CardContent className="space-y-2">
-              <Textarea
-                placeholder="Paste post content as markdown here."
-                id="post"
-              />
-            </CardContent>
+              <CardContent className="space-y-2">
+                <Textarea
+                  placeholder="Paste post content as markdown here."
+                  id="post"
+                  disabled={isSeoLoading}
+                  {...seoForm.register("post")}
+                />
 
-            <CardFooter>
-              <Button>Generate</Button>
-            </CardFooter>
-          </Card>
+                {seoForm.formState.errors?.post && (
+                  <p className="px-1 text-xs text-red-600">
+                    {seoForm.formState.errors.post.message}
+                  </p>
+                )}
+              </CardContent>
+
+              <CardFooter>
+                <Button type="submit" disabled={isSeoLoading}>
+                  {isSeoLoading && (
+                    <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                  )}
+                  Generate
+                </Button>
+              </CardFooter>
+            </Card>
+          </form>
         </TabsContent>
 
         <TabsContent value="post">
