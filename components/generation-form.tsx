@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { MouseEvent, useState } from "react"
 import { useGeneration } from "@/contexts/generation"
 import { useModal } from "@/contexts/modal"
 import { SEOGeneration } from "@/types"
@@ -36,8 +36,10 @@ type SeoFormData = z.infer<typeof seoFormSchema>
 
 export function GenerationForm({ className, ...props }: GenerationFormProps) {
   const [isSeoLoading, setIsSeoLoading] = useState(false)
+  const [file, setFile] = useState<File | null>(null)
   const { changeModalVisibility } = useModal()
   const { setGeneration } = useGeneration()
+  const reader = new FileReader()
 
   const seoForm = useForm<SeoFormData>({
     resolver: zodResolver(seoFormSchema),
@@ -68,6 +70,28 @@ export function GenerationForm({ className, ...props }: GenerationFormProps) {
         description: "Your generation failed. Please try again.",
         variant: "destructive",
       })
+    } finally {
+      setFile(null)
+    }
+  }
+
+  function onFileUpload(
+    e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>
+  ) {
+    e.preventDefault()
+
+    if (!file || file.name.split(".")[1] !== "mdx") {
+      return toast({
+        title: "Something went wrong.",
+        description: "Invalid file. Please try again.",
+        variant: "destructive",
+      })
+    }
+
+    reader.readAsText(file)
+    reader.onload = (e) => {
+      const content = e.target?.result as string
+      onSeoFormSubmit({ post: content })
     }
   }
 
@@ -150,16 +174,21 @@ export function GenerationForm({ className, ...props }: GenerationFormProps) {
         <CardHeader>
           <CardTitle>Upload Post</CardTitle>
           <CardDescription>
-            Upload your post as a markdown file here instead of pasting it.
+            Upload your post as a markdown file here instead of pasting it to
+            generate the SEO.
           </CardDescription>
         </CardHeader>
 
         <CardContent className="space-y-2">
-          <Input id="file" type="file" />
+          <Input
+            id="file"
+            type="file"
+            onChange={(e) => setFile(e.target.files![0])}
+          />
         </CardContent>
 
         <CardFooter>
-          <Button>Upload</Button>
+          <Button onClick={onFileUpload}>Generate</Button>
         </CardFooter>
       </Card>
     </section>
