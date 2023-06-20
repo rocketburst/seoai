@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
       {
         role: "system",
         content:
-          "When responding, always begin with Here are the SEO specifications you wanted. Use everything provided in the prompt to formulate your response.",
+          "When responding, use everything provided in the prompt to formulate your response. Respond with a JSON object with the SEO optimized title as a string, the SEO optimized description as a string, and the SEO optimized tags as an array of strings.",
       },
       {
         role: "user",
@@ -32,5 +32,5 @@ export async function POST(req: NextRequest) {
   console.log("DATA IS: ", data)
   console.log(data.choices[0].message)
 
-  return NextResponse.json({ message: data.choices[0].message })
+  return NextResponse.json({ message: data.choices[0].message?.content })
 }

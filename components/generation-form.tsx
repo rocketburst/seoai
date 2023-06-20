@@ -1,7 +1,9 @@
 "use client"
 
 import { useState } from "react"
+import { useGeneration } from "@/contexts/generation"
 import { useModal } from "@/contexts/modal"
+import { SEOGeneration } from "@/types"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
@@ -19,6 +21,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Textarea } from "@/components/ui/textarea"
+import { toast } from "@/components/ui/use-toast"
 import { Icons } from "@/components/icons"
 
 interface GenerationFormProps extends React.HTMLAttributes<HTMLDivElement> {}
@@ -34,6 +37,7 @@ type SeoFormData = z.infer<typeof seoFormSchema>
 export function GenerationForm({ className, ...props }: GenerationFormProps) {
   const [isSeoLoading, setIsSeoLoading] = useState(false)
   const { changeModalVisibility } = useModal()
+  const { setGeneration } = useGeneration()
 
   const seoForm = useForm<SeoFormData>({
     resolver: zodResolver(seoFormSchema),
@@ -41,25 +45,30 @@ export function GenerationForm({ className, ...props }: GenerationFormProps) {
   })
 
   const message = `
-    Here are the SEO specifications you wanted:
-
-  Title: How to Build a Modal Using Tailwind CSS and Headless UI Library
-  Description: Learn how to create and use modals in web applications using Tailwind CSS and Headless UI library. Follow our step-by-step guide to build your own modal and improve your web app's user experience.
-  Tags: Tailwind CSS, Headless UI, modals, web applications, user experience, web development, front-end development`
+    { "title": "How to Build a Modal Using Tailwind CSS and Headless UI | Tutorial", "description": "Learn how to build a custom modal using Tailwind CSS and Headless UI, with easy-to-follow code snippets and step-by-step instructions. Improve accessibility and user experience on your web applications today!", "tags": ["Tailwind CSS", "Headless UI", "Modal", "Web Development", "Tutorial"] }`
 
   async function onSeoFormSubmit({ post }: SeoFormData) {
     setIsSeoLoading(true)
 
+    // TODO: uncomment in prod
     // const { message }: { message: string } = await fetch("/api/generate/seo", {
     //   method: "POST",
     //   body: JSON.stringify({ post }),
     // }).then((res) => res.json())
-    // console.log(message)
 
-    setTimeout(() => {
-      setIsSeoLoading(false)
+    setIsSeoLoading(false)
+
+    try {
+      const generation = JSON.parse(message) as SEOGeneration
+      setGeneration("seo", generation)
       changeModalVisibility("seo")
-    }, 2000)
+    } catch (error) {
+      return toast({
+        title: "Something went wrong.",
+        description: "Your generation failed. Please try again.",
+        variant: "destructive",
+      })
+    }
   }
 
   return (

@@ -21,3 +21,21 @@ export type ModalContextType = {
   changeModalVisibility: (modal: ModalType) => void
   getModalState: (modal: ModalType) => boolean
 }
+
+export type GenerationType = ModalType
+
+export type SEOGeneration = {
+  title: string
+  description: string
+  tags: string[]
+}
+
+export type PostGeneration = {}
+
+export type GenerationContextType = {
+  getGeneration: (type: GenerationType) => SEOGeneration | PostGeneration
+  setGeneration: (
+    type: GenerationType,
+    content: SEOGeneration | PostGeneration
+  ) => void
+}

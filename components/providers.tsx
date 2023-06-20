@@ -1,5 +1,6 @@
 "use client"
 
+import { GenerationProvider } from "@/contexts/generation"
 import { ModalProvider } from "@/contexts/modal"
 import { SessionProvider } from "next-auth/react"
 
@@ -13,8 +14,10 @@ export function Providers({ children }: ProvidersProps) {
   return (
     <SessionProvider>
       <ModalProvider>
-        <SEOModal />
-        {children}
+        <GenerationProvider>
+          <SEOModal />
+          {children}
+        </GenerationProvider>
       </ModalProvider>
     </SessionProvider>
   )
