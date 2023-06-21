@@ -49,7 +49,7 @@ export function SEOForm() {
   const message = `
     { "title": "How to Build a Modal Using Tailwind CSS and Headless UI | Tutorial", "description": "Learn how to build a custom modal using Tailwind CSS and Headless UI, with easy-to-follow code snippets and step-by-step instructions. Improve accessibility and user experience on your web applications today!", "tags": ["Tailwind CSS", "Headless UI", "Modal", "Web Development", "Tutorial"] }`
 
-  async function onSeoFormSubmit({ post }: SeoFormData) {
+  async function onSubmit({ post }: SeoFormData) {
     setIsSeoLoading(true)
 
     // TODO: uncomment in prod
@@ -91,13 +91,13 @@ export function SEOForm() {
     reader.readAsText(file)
     reader.onload = (e) => {
       const content = e.target?.result as string
-      onSeoFormSubmit({ post: content })
+      onSubmit({ post: content })
     }
   }
 
   return (
     <>
-      <form onSubmit={handleSubmit(onSeoFormSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <Card>
           <CardHeader>
             <CardTitle>Generate New SEO for Post</CardTitle>
