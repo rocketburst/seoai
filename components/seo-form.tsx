@@ -18,13 +18,9 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Textarea } from "@/components/ui/textarea"
 import { toast } from "@/components/ui/use-toast"
 import { Icons } from "@/components/icons"
-
-interface GenerationFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 const seoFormSchema = z.object({
   post: z.string().min(20, {
@@ -34,14 +30,18 @@ const seoFormSchema = z.object({
 
 type SeoFormData = z.infer<typeof seoFormSchema>
 
-export function GenerationForm({ className, ...props }: GenerationFormProps) {
+export function SEOForm() {
   const [isSeoLoading, setIsSeoLoading] = useState(false)
   const [file, setFile] = useState<File | null>(null)
   const { changeModalVisibility } = useModal()
   const { setGeneration } = useGeneration()
   const reader = new FileReader()
 
-  const seoForm = useForm<SeoFormData>({
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm<SeoFormData>({
     resolver: zodResolver(seoFormSchema),
     defaultValues: { post: "" },
   })
@@ -96,79 +96,40 @@ export function GenerationForm({ className, ...props }: GenerationFormProps) {
   }
 
   return (
-    <section className={className} {...props}>
-      <Tabs defaultValue="seo" className="max-w-[460px]">
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="seo">New SEO</TabsTrigger>
-          <TabsTrigger value="post">New Post</TabsTrigger>
-        </TabsList>
+    <>
+      <form onSubmit={handleSubmit(onSeoFormSubmit)}>
+        <Card>
+          <CardHeader>
+            <CardTitle>Generate New SEO for Post</CardTitle>
+            <CardDescription>
+              Paste your post content here, then click generate to create SEO
+              optimized tags for your blog post.
+            </CardDescription>
+          </CardHeader>
 
-        <TabsContent value="seo">
-          <form onSubmit={seoForm.handleSubmit(onSeoFormSubmit)}>
-            <Card>
-              <CardHeader>
-                <CardTitle>Generate New SEO for Post</CardTitle>
-                <CardDescription>
-                  Paste your post content here, then click generate to create
-                  SEO optimized tags for your blog post.
-                </CardDescription>
-              </CardHeader>
+          <CardContent className="space-y-2">
+            <Textarea
+              placeholder="Paste post content as markdown here."
+              id="post"
+              disabled={isSeoLoading}
+              {...register("post")}
+            />
 
-              <CardContent className="space-y-2">
-                <Textarea
-                  placeholder="Paste post content as markdown here."
-                  id="post"
-                  disabled={isSeoLoading}
-                  {...seoForm.register("post")}
-                />
+            {errors?.post && (
+              <p className="px-1 text-xs text-red-600">{errors.post.message}</p>
+            )}
+          </CardContent>
 
-                {seoForm.formState.errors?.post && (
-                  <p className="px-1 text-xs text-red-600">
-                    {seoForm.formState.errors.post.message}
-                  </p>
-                )}
-              </CardContent>
-
-              <CardFooter>
-                <Button type="submit" disabled={isSeoLoading}>
-                  {isSeoLoading && (
-                    <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-                  )}
-                  Generate
-                </Button>
-              </CardFooter>
-            </Card>
-          </form>
-        </TabsContent>
-
-        <TabsContent value="post">
-          <Card>
-            <CardHeader>
-              <CardTitle>Generate New Post</CardTitle>
-              <CardDescription>
-                Fill in the fields regarding the the post. After generating, a
-                markdown file will be downloaded.
-              </CardDescription>
-            </CardHeader>
-
-            <CardContent className="space-y-2">
-              <div className="space-y-1">
-                <Label htmlFor="name">Name of the Post</Label>
-                <Input id="name" type="text" />
-              </div>
-
-              <div className="space-y-1">
-                <Label htmlFor="description">Description of the Post</Label>
-                <Textarea id="description" />
-              </div>
-            </CardContent>
-
-            <CardFooter>
-              <Button>Save password</Button>
-            </CardFooter>
-          </Card>
-        </TabsContent>
-      </Tabs>
+          <CardFooter>
+            <Button type="submit" disabled={isSeoLoading}>
+              {isSeoLoading && (
+                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+              )}
+              Generate
+            </Button>
+          </CardFooter>
+        </Card>
+      </form>
 
       <Card className="max-w-[500px]">
         <CardHeader>
@@ -191,6 +152,6 @@ export function GenerationForm({ className, ...props }: GenerationFormProps) {
           <Button onClick={onFileUpload}>Generate</Button>
         </CardFooter>
       </Card>
-    </section>
+    </>
   )
 }
