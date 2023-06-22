@@ -30,7 +30,10 @@ export type SEOGeneration = {
   tags: string[]
 }
 
-export type PostGeneration = {}
+export type PostGeneration = {
+  file: File
+  url: string
+}
 
 export type GenerationContextType = {
   getGeneration: (type: GenerationType) => SEOGeneration | PostGeneration

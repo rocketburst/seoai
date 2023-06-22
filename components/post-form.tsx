@@ -1,6 +1,8 @@
 "use client"
 
-import { MouseEvent, useEffect, useRef, useState } from "react"
+import { MouseEvent, useRef, useState } from "react"
+import { useGeneration } from "@/contexts/generation"
+import { useModal } from "@/contexts/modal"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
@@ -17,6 +19,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
+import { toast } from "@/components/ui/use-toast"
 import { Icons } from "@/components/icons"
 
 const postFormSchema = z.object({
@@ -32,6 +35,12 @@ const postFormSchema = z.object({
 type FormData = z.infer<typeof postFormSchema>
 
 export function PostForm() {
+  const tagInputRef = useRef<HTMLInputElement>(null)
+  const [tags, setTags] = useState<string[]>([])
+  const [loading, setLoading] = useState(false)
+  const { setGeneration } = useGeneration()
+  const { changeModalVisibility } = useModal()
+
   const {
     handleSubmit,
     register,
@@ -40,10 +49,6 @@ export function PostForm() {
     resolver: zodResolver(postFormSchema),
     defaultValues: { name: "", description: "", readTime: 5 },
   })
-
-  const tagInputRef = useRef<HTMLInputElement>(null)
-  const [tags, setTags] = useState<string[]>([])
-  const [loading, setLoading] = useState(false)
 
   async function onSubmit({ name, description, readTime }: FormData) {
     setLoading(true)
@@ -59,23 +64,32 @@ export function PostForm() {
     //     tags,
     //   }),
     // }).then((res) => res.json())
+    setLoading(false)
 
     const message =
       "In the above example, the execution context for the `add` function is created when it is called with arguments `10` and `20`. Inside the function, a new variable `result` is declared which is available in the function execution context."
 
-    const file = new File([message], "post", { type: "text/plain" })
-    const fileURL = URL.createObjectURL(file)
-    window.open(fileURL)
-
-    setLoading(false)
-    setTags([])
-    console.log(message)
+    try {
+      const file = new File([message], "post", { type: "text/plain" })
+      const url = URL.createObjectURL(file)
+      setGeneration("post", { file, url })
+      changeModalVisibility("post")
+    } catch (error) {
+      return toast({
+        title: "Something went wrong.",
+        description: "Your generation failed. Please try again.",
+        variant: "destructive",
+      })
+    } finally {
+      setTags([])
+    }
   }
 
   function addTag(e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) {
     if (!tagInputRef.current?.value) return
     e.preventDefault()
     setTags([...tags, tagInputRef.current?.value as string])
+    tagInputRef.current!.value = ""
   }
 
   return (
