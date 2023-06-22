@@ -1,3 +1,4 @@
+import "server-only"
 import { env } from "@/env.mjs"
 import { Configuration, OpenAIApi } from "openai"
 

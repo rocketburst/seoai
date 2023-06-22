@@ -40,13 +40,14 @@ model Session {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  name      String?
-  email     String?  @unique
-  password  String
-  image     String?
-  createdAt DateTime @default(now()) @map(name: "created_at")
-  updatedAt DateTime @default(now()) @map(name: "updated_at")
+  id            String   @id @default(cuid())
+  name          String?
+  email         String?  @unique
+  password      String
+  image         String?
+  createdAt     DateTime @default(now()) @map(name: "created_at")
+  updatedAt     DateTime @default(now()) @map(name: "updated_at")
+  remainingGens Int      @default(15)
 
   accounts Account[]
   sessions Session[]
