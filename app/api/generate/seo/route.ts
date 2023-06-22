@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import * as z from "zod"
 
-import openai from "@/lib/openai"
+import { openai } from "@/lib/openai"
 
 export const seoRouteSchema = z.object({
   post: z.string().min(2),

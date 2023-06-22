@@ -17,6 +17,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
+import { Icons } from "@/components/icons"
 
 const postFormSchema = z.object({
   name: z.string().min(2, {
@@ -25,6 +26,7 @@ const postFormSchema = z.object({
   description: z.string().min(20, {
     message: "Must have description",
   }),
+  readTime: z.number(),
 })
 
 type FormData = z.infer<typeof postFormSchema>
@@ -36,13 +38,35 @@ export function PostForm() {
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(postFormSchema),
-    defaultValues: { name: "", description: "" },
+    defaultValues: { name: "", description: "", readTime: 5 },
   })
 
   const tagInputRef = useRef<HTMLInputElement>(null)
   const [tags, setTags] = useState<string[]>([])
+  const [loading, setLoading] = useState(false)
 
-  async function onSubmit(data: FormData) {}
+  async function onSubmit({ name, description, readTime }: FormData) {
+    setLoading(true)
+    tagInputRef.current!.value = ""
+
+    // TODO: uncomment in prod
+    // const { message }: { message: string } = await fetch("/api/generate/post", {
+    //   method: "POST",
+    //   body: JSON.stringify({
+    //     name,
+    //     description,
+    //     readTime,
+    //     tags,
+    //   }),
+    // }).then((res) => res.json())
+
+    const message =
+      "In the above example, the execution context for the `add` function is created when it is called with arguments `10` and `20`. Inside the function, a new variable `result` is declared which is available in the function execution context."
+
+    setLoading(false)
+    setTags([])
+    console.log(message)
+  }
 
   function addTag(e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) {
     if (!tagInputRef.current?.value) return
@@ -64,7 +88,12 @@ export function PostForm() {
         <CardContent className="space-y-2">
           <div className="space-y-1">
             <Label htmlFor="name">Name of the Post</Label>
-            <Input id="name" type="text" {...register("name")} />
+            <Input
+              id="name"
+              type="text"
+              disabled={loading}
+              {...register("name")}
+            />
 
             {errors?.name && (
               <p className="px-1 text-xs text-red-600">{errors.name.message}</p>
@@ -73,7 +102,11 @@ export function PostForm() {
 
           <div className="space-y-1">
             <Label htmlFor="description">Description of the Post</Label>
-            <Textarea id="description" {...register("description")} />
+            <Textarea
+              id="description"
+              disabled={loading}
+              {...register("description")}
+            />
 
             {errors?.description && (
               <p className="px-1 text-xs text-red-600">
@@ -83,12 +116,38 @@ export function PostForm() {
           </div>
 
           <div className="space-y-1">
+            <Label htmlFor="name">Read Time</Label>
+            <Input
+              id="name"
+              type="number"
+              disabled={loading}
+              {...register("readTime")}
+            />
+
+            {errors?.readTime && (
+              <p className="px-1 text-xs text-red-600">
+                {errors.readTime.message}
+              </p>
+            )}
+          </div>
+
+          <div className="space-y-1">
             <Label htmlFor="name">Tags</Label>
 
             <div className="flex w-full items-center space-x-2">
-              <Input type="text" placeholder="" ref={tagInputRef} />
+              <Input
+                type="text"
+                placeholder=""
+                disabled={loading}
+                ref={tagInputRef}
+              />
 
-              <Button type="submit" variant="ghost" onClick={addTag}>
+              <Button
+                type="submit"
+                variant="ghost"
+                onClick={addTag}
+                disabled={loading}
+              >
                 Add
               </Button>
             </div>
@@ -104,7 +163,10 @@ export function PostForm() {
         </CardContent>
 
         <CardFooter>
-          <Button type="submit">Generate Post</Button>
+          <Button type="submit" disabled={loading}>
+            {loading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
+            Generate Post
+          </Button>
         </CardFooter>
       </form>
     </Card>

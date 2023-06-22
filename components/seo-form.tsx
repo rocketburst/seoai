@@ -35,7 +35,6 @@ export function SEOForm() {
   const [file, setFile] = useState<File | null>(null)
   const { changeModalVisibility } = useModal()
   const { setGeneration } = useGeneration()
-  const reader = new FileReader()
 
   const {
     handleSubmit,
@@ -88,6 +87,7 @@ export function SEOForm() {
       })
     }
 
+    const reader = new FileReader()
     reader.readAsText(file)
     reader.onload = (e) => {
       const content = e.target?.result as string
