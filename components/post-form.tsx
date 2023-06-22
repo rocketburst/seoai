@@ -1,6 +1,6 @@
 "use client"
 
-import { MouseEvent, useRef, useState } from "react"
+import { MouseEvent, useEffect, useRef, useState } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
@@ -62,6 +62,10 @@ export function PostForm() {
 
     const message =
       "In the above example, the execution context for the `add` function is created when it is called with arguments `10` and `20`. Inside the function, a new variable `result` is declared which is available in the function execution context."
+
+    const file = new File([message], "post", { type: "text/plain" })
+    const fileURL = URL.createObjectURL(file)
+    window.open(fileURL)
 
     setLoading(false)
     setTags([])
