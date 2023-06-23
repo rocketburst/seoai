@@ -15,7 +15,7 @@ interface ProfileFormProps {
 
 export function ProfileForm({ user }: ProfileFormProps) {
   return (
-    <section className="flex items-start space-y-10 lg:space-y-0 lg:space-x-10 flex-col lg:flex-row lg:items-center pb-10">
+    <section className="flex flex-col items-start space-y-10 pb-10 lg:flex-row lg:items-center lg:space-x-10 lg:space-y-0">
       <Tabs defaultValue="account" className="max-w-[500px]">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="account">Account</TabsTrigger>

@@ -19,7 +19,7 @@ export async function SiteHeader() {
         <MainNav items={siteConfig.mainNav} />
 
         <div className="flex flex-1 items-center justify-end space-x-4">
-          <nav className="items-center space-x-1 hidden md:flex">
+          <nav className="hidden items-center space-x-1 md:flex">
             {user ? (
               <div
                 className={cn(
@@ -27,7 +27,7 @@ export async function SiteHeader() {
                     size: "sm",
                     variant: "ghost",
                   }),
-                  "hover:bg-inherit cursor-pointer"
+                  "cursor-pointer hover:bg-inherit"
                 )}
               >
                 <HeaderAvatar

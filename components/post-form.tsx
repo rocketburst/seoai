@@ -172,7 +172,7 @@ export function PostForm() {
           </div>
 
           <div className="space-y-1">
-            <ul className="text-xs flex items-center space-x-1">
+            <ul className="flex items-center space-x-1 text-xs">
               {tags.map((tag, i) => (
                 <li key={i}>{`${tag}, `}</li>
               ))}

@@ -31,13 +31,13 @@ export function MobileMenu({ user }: MobileMenuProps) {
   const { setTheme, theme } = useTheme()
 
   return (
-    <div className="md:hidden flex items-center justify-center">
+    <div className="flex items-center justify-center md:hidden">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Icons.menu />
         </DropdownMenuTrigger>
 
-        <DropdownMenuContent className="w-56 mr-3">
+        <DropdownMenuContent className="mr-3 w-56">
           <DropdownMenuLabel>
             {user ? user.email : "My Account"}
           </DropdownMenuLabel>

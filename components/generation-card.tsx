@@ -17,7 +17,7 @@ export function GenerationCard({ className, ...props }: GenerationFormProps) {
 
         <TabsContent
           value="seo"
-          className="space-y-5 flex flex-col lg:space-y-0 lg:flex-row lg:space-x-10"
+          className="flex flex-col space-y-5 lg:flex-row lg:space-x-10 lg:space-y-0"
         >
           <SEOForm />
         </TabsContent>
