@@ -1,8 +1,8 @@
 "use client"
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { PostForm } from "@/components/post-form"
-import { SEOForm } from "@/components/seo-form"
+import { PostForm } from "@/components/forms/post-form"
+import { SEOForm } from "@/components/forms/seo-form"
 
 interface GenerationFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 

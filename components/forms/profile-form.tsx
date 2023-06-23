@@ -1,8 +1,8 @@
 "use client"
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { AccountForm } from "@/components/account-form"
-import { PasswordForm } from "@/components/password-form"
+import { AccountForm } from "@/components/forms/account-form"
+import { PasswordForm } from "@/components/forms/password-form"
 
 interface ProfileFormProps {
   user: {

@@ -4,8 +4,7 @@ import { GenerationProvider } from "@/contexts/generation"
 import { ModalProvider } from "@/contexts/modal"
 import { SessionProvider } from "next-auth/react"
 
-import { PostModal } from "@/components/post-modal"
-import { SEOModal } from "@/components/seo-modal"
+import { Modals } from "@/components/modals/"
 
 interface ProvidersProps {
   children: React.ReactNode
@@ -16,8 +15,7 @@ export function Providers({ children }: ProvidersProps) {
     <SessionProvider>
       <ModalProvider>
         <GenerationProvider>
-          <SEOModal />
-          <PostModal />
+          <Modals />
 
           {children}
         </GenerationProvider>
