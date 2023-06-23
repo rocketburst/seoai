@@ -31,7 +31,7 @@ export type SEOGeneration = {
 }
 
 export type PostGeneration = {
-  file: File
+  file: File | null
   url: string
 }
 

@@ -18,7 +18,10 @@ export function GenerationProvider({
     description: "",
     tags: [],
   })
-  const [postGen, setPostGen] = useState<PostGeneration>({})
+  const [postGen, setPostGen] = useState<PostGeneration>({
+    file: null,
+    url: "",
+  })
 
   function getGeneration(type: GenerationType) {
     switch (type) {
