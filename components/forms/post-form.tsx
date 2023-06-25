@@ -56,23 +56,23 @@ export function PostForm() {
     setLoading(true)
     tagInputRef.current!.value = ""
 
-    // const message =
-    //   "In the above example, the execution context for the `add` function is created when it is called with arguments `10` and `20`. Inside the function, a new variable `result` is declared which is available in the function execution context."
+    const message =
+      "In the above example, the execution context for the `add` function is created when it is called with arguments `10` and `20`. Inside the function, a new variable `result` is declared which is available in the function execution context."
 
     try {
       // TODO: uncomment in prod
-      const { message }: { message: string } = await fetch(
-        `/api/generate/post?id=${session?.user.id}`,
-        {
-          method: "POST",
-          body: JSON.stringify({
-            name,
-            description,
-            readTime,
-            tags,
-          }),
-        }
-      ).then((res) => res.json())
+      // const { message }: { message: string } = await fetch(
+      //   `/api/generate/post?id=${session?.user.id}`,
+      //   {
+      //     method: "POST",
+      //     body: JSON.stringify({
+      //       name,
+      //       description,
+      //       readTime,
+      //       tags,
+      //     }),
+      //   }
+      // ).then((res) => res.json())
 
       const file = new File([message], "post", { type: "text/plain" })
       const url = URL.createObjectURL(file)
