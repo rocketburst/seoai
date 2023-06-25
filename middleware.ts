@@ -1,4 +1,6 @@
 import { NextResponse } from "next/server"
+import { Ratelimit } from "@upstash/ratelimit"
+import { Redis } from "@upstash/redis"
 import { withAuth } from "next-auth/middleware"
 
 export default withAuth(
@@ -9,8 +11,38 @@ export default withAuth(
       req.nextUrl.pathname.startsWith("/login") ||
       req.nextUrl.pathname.startsWith("/register")
 
+    const ratelimit = new Ratelimit({
+      redis: Redis.fromEnv(),
+      analytics: true,
+      limiter: Ratelimit.slidingWindow(15, "30d"),
+    })
+
     if (req.nextUrl.pathname === "/")
       return NextResponse.redirect(new URL("/dashboard", req.url))
+
+    if (req.nextUrl.pathname.startsWith("/api/generate")) {
+      const ip = req.headers.get("x-forwarded-for") ?? ""
+      const { success, remaining, reset } = await ratelimit.limit(ip)
+
+      if (!success) {
+        const now = Date.now()
+        const retryAfter = Math.floor((reset - now) / 1000)
+        return new NextResponse("Too Many Requests", {
+          status: 429,
+          headers: {
+            ["retry-after"]: `${retryAfter}`,
+          },
+        })
+      }
+
+      const newHeaders = new Headers(req.headers)
+      newHeaders.set("x-remaining", `${remaining}`)
+      return NextResponse.next({
+        request: {
+          headers: newHeaders,
+        },
+      })
+    }
 
     if (isAuthPage) {
       if (isAuth) return NextResponse.redirect(new URL("/dashboard", req.url))
@@ -35,5 +67,5 @@ export default withAuth(
 )
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/login", "/register"],
+  matcher: ["/dashboard/:path*", "/login", "/register", "/api/:path*"],
 }

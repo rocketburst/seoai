@@ -4,6 +4,7 @@ import { MouseEvent, useRef, useState } from "react"
 import { useGeneration } from "@/contexts/generation"
 import { useModal } from "@/contexts/modal"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { useSession } from "next-auth/react"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
 
@@ -40,6 +41,7 @@ export function PostForm() {
   const [loading, setLoading] = useState(false)
   const { setGeneration } = useGeneration()
   const { changeModalVisibility } = useModal()
+  const { data: session } = useSession()
 
   const {
     handleSubmit,
@@ -54,22 +56,24 @@ export function PostForm() {
     setLoading(true)
     tagInputRef.current!.value = ""
 
-    // TODO: uncomment in prod
-    // const { message }: { message: string } = await fetch("/api/generate/post", {
-    //   method: "POST",
-    //   body: JSON.stringify({
-    //     name,
-    //     description,
-    //     readTime,
-    //     tags,
-    //   }),
-    // }).then((res) => res.json())
-    setLoading(false)
-
-    const message =
-      "In the above example, the execution context for the `add` function is created when it is called with arguments `10` and `20`. Inside the function, a new variable `result` is declared which is available in the function execution context."
+    // const message =
+    //   "In the above example, the execution context for the `add` function is created when it is called with arguments `10` and `20`. Inside the function, a new variable `result` is declared which is available in the function execution context."
 
     try {
+      // TODO: uncomment in prod
+      const { message }: { message: string } = await fetch(
+        `/api/generate/post?id=${session?.user.id}`,
+        {
+          method: "POST",
+          body: JSON.stringify({
+            name,
+            description,
+            readTime,
+            tags,
+          }),
+        }
+      ).then((res) => res.json())
+
       const file = new File([message], "post", { type: "text/plain" })
       const url = URL.createObjectURL(file)
       setGeneration("post", { file, url })
@@ -81,6 +85,7 @@ export function PostForm() {
         variant: "destructive",
       })
     } finally {
+      setLoading(false)
       setTags([])
     }
   }

@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from "next/server"
 import * as z from "zod"
 
+import { db } from "@/lib/db"
 import { openai } from "@/lib/openai"
+import { getCurrentUser } from "@/lib/session"
 
 export const seoRouteSchema = z.object({
   post: z.string().min(2),
@@ -10,6 +12,13 @@ export const seoRouteSchema = z.object({
 export async function POST(req: NextRequest) {
   const body = await req.json()
   const { post } = seoRouteSchema.parse(body)
+  const user = await getCurrentUser()
+
+  const remaining = Number(req.headers.get("x-remaining"))
+  await db.user.update({
+    where: { id: user?.id },
+    data: { remainingGens: remaining },
+  })
 
   const { data } = await openai.createChatCompletion({
     model: "gpt-3.5-turbo",
