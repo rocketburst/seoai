@@ -17,10 +17,7 @@ export default async function UsagePage() {
 
   return (
     <DashboardShell>
-      <DashboardHeader
-        heading="API Usage"
-        text="Get your API key to use our API endpoint here."
-      />
+      <DashboardHeader heading="API Usage" text="Get your API key here." />
 
       <div className="pb-10">
         <UsageAlert remaining={remainingGens} />

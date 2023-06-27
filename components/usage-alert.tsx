@@ -17,7 +17,7 @@ export function UsageAlert({ remaining }: UsageAlertProps) {
 
   return (
     <div className="flex flex-col space-y-4 md:flex-row md:items-center md:justify-between md:space-y-0">
-      <div>
+      <div className="max-w-[250px] sm:max-w-sm">
         <Alert variant={remaining < 5 ? "destructive" : "default"}>
           <Icons.alert className="h-4 w-4" />
           <AlertTitle>Heads up!</AlertTitle>

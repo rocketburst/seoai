@@ -19,7 +19,6 @@ export function MobileKeysTable({ data }: MobileKeysTableProps) {
   return (
     <div className="pt-5 sm:hidden">
       <Table>
-        <TableCaption>All API Keys.</TableCaption>
         <TableHeader>
           <TableRow>
             <TableHead className="w-[100px]">Name</TableHead>
