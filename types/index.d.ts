@@ -15,14 +15,14 @@ export type SidebarNavItem = {
   href: string
 }
 
-export type ModalType = "seo" | "post"
+export type ModalType = "seo" | "post" | "api-key"
 
 export type ModalContextType = {
   changeModalVisibility: (modal: ModalType) => void
   getModalState: (modal: ModalType) => boolean
 }
 
-export type GenerationType = ModalType
+export type GenerationType = "seo" | "post"
 
 export type SEOGeneration = {
   title: string
@@ -41,4 +41,10 @@ export type GenerationContextType = {
     type: GenerationType,
     content: SEOGeneration | PostGeneration
   ) => void
+}
+
+export type ApiKeyContextType = {
+  isCreating: boolean
+  setIsCreating: Dispatch<SetStateAction<boolean>>
+  createApiKey: (name: string) => Promise<void>
 }

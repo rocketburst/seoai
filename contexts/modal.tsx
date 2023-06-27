@@ -8,6 +8,7 @@ const ModalContext = createContext<ModalContextType | null>(null)
 export function ModalProvider({ children }: { children: React.ReactNode }) {
   const [isSeoModalOpen, setIsSeoModalOpen] = useState(false)
   const [isPostModalOpen, setIsPostModalOpen] = useState(false)
+  const [isApiKeyModalOpen, setIsApiKeyModalOpen] = useState(false)
 
   function changeModalVisibility(modal: ModalType) {
     switch (modal) {
@@ -16,6 +17,8 @@ export function ModalProvider({ children }: { children: React.ReactNode }) {
         break
       case "seo":
         setIsSeoModalOpen(!isSeoModalOpen)
+      case "api-key":
+        setIsApiKeyModalOpen(!isApiKeyModalOpen)
     }
   }
 
@@ -25,6 +28,8 @@ export function ModalProvider({ children }: { children: React.ReactNode }) {
         return isSeoModalOpen
       case "post":
         return isPostModalOpen
+      case "api-key":
+        return isApiKeyModalOpen
     }
   }
 

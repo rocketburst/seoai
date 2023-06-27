@@ -1,5 +1,6 @@
 "use client"
 
+import { ApiKeyProvider } from "@/contexts/api-key"
 import { GenerationProvider } from "@/contexts/generation"
 import { ModalProvider } from "@/contexts/modal"
 import { SessionProvider } from "next-auth/react"
@@ -15,9 +16,11 @@ export function Providers({ children }: ProvidersProps) {
     <SessionProvider>
       <ModalProvider>
         <GenerationProvider>
-          <Modals />
+          <ApiKeyProvider>
+            <Modals />
 
-          {children}
+            {children}
+          </ApiKeyProvider>
         </GenerationProvider>
       </ModalProvider>
     </SessionProvider>
