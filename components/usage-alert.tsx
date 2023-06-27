@@ -13,7 +13,7 @@ interface UsageAlertProps {
 
 export function UsageAlert({ remaining }: UsageAlertProps) {
   const { changeModalVisibility } = useModal()
-  const { isCreating } = useApiKey()
+  const { isFetching, setMode } = useApiKey()
 
   return (
     <div className="flex flex-col space-y-4 md:flex-row md:items-center md:justify-between md:space-y-0">
@@ -30,13 +30,16 @@ export function UsageAlert({ remaining }: UsageAlertProps) {
       <div>
         <Button
           variant="outline"
-          onClick={() => changeModalVisibility("api-key")}
-          disabled={isCreating}
+          onClick={() => {
+            setMode("create")
+            changeModalVisibility("api-key")
+          }}
+          disabled={isFetching}
         >
-          {isCreating && (
+          {isFetching && (
             <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
           )}
-          {isCreating ? "Creating" : "Create"} Key
+          {isFetching ? "Creating" : "Create"} Key
         </Button>
       </div>
     </div>

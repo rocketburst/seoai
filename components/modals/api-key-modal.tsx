@@ -16,7 +16,7 @@ import { Label } from "@/components/ui/label"
 
 export function ApiKeyModal() {
   const { changeModalVisibility, getModalState } = useModal()
-  const { createApiKey, setIsCreating } = useApiKey()
+  const { createApiKey, editApiKey, setIsFetching, mode } = useApiKey()
   const nameRef = useRef<HTMLInputElement>(null)
 
   async function onClick(
@@ -27,9 +27,10 @@ export function ApiKeyModal() {
     if (!name) return
 
     changeModalVisibility("api-key")
-    setIsCreating(true)
+    setIsFetching(true)
 
-    await createApiKey(name)
+    if (mode === "create") await createApiKey(name)
+    else await editApiKey(name)
   }
 
   return (
@@ -41,9 +42,12 @@ export function ApiKeyModal() {
         onInteractOutside={() => changeModalVisibility("api-key")}
       >
         <DialogHeader>
-          <DialogTitle>Create API Key</DialogTitle>
+          <DialogTitle>
+            {mode === "create" ? "Create API Key" : "Edit Existing API Key"}
+          </DialogTitle>
           <DialogDescription>
-            Enter the name of your API Key. Click create when you&apos;re done.
+            Enter the {mode === "edit" && "new"} name of your API Key. Click{" "}
+            {mode === "create" ? "create" : "save"} when you&apos;re done.
           </DialogDescription>
         </DialogHeader>
 
@@ -55,7 +59,9 @@ export function ApiKeyModal() {
         </div>
 
         <DialogFooter>
-          <Button onClick={onClick}>Create</Button>
+          <Button onClick={onClick}>
+            {mode === "create" ? "Create" : "Save"}
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

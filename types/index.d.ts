@@ -1,3 +1,5 @@
+import { Dispatch, SetStateAction } from "react"
+
 import { Icons } from "@/components/icons"
 
 export interface NavItem {
@@ -43,8 +45,13 @@ export type GenerationContextType = {
   ) => void
 }
 
+export type Mode = "create" | "edit"
+
 export type ApiKeyContextType = {
-  isCreating: boolean
-  setIsCreating: Dispatch<SetStateAction<boolean>>
+  isFetching: boolean
+  setIsFetching: Dispatch<SetStateAction<boolean>>
+  mode: Mode
+  setMode: Dispatch<SetStateAction<Mode>>
   createApiKey: (name: string) => Promise<void>
+  editApiKey: (name: string) => Promise<void>
 }

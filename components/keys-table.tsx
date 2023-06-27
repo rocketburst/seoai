@@ -1,6 +1,9 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 "use client"
 
 import { useState } from "react"
+import { useApiKey } from "@/contexts/api-key"
+import { useModal } from "@/contexts/modal"
 import { ApiKey } from "@prisma/client"
 import {
   ColumnDef,
@@ -256,7 +259,8 @@ export const columns: ColumnDef<ApiKey>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
-      const payment = row.original
+      const { changeModalVisibility } = useModal()
+      const { setMode } = useApiKey()
 
       return (
         <DropdownMenu>
@@ -269,10 +273,15 @@ export const columns: ColumnDef<ApiKey>[] = [
 
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <DropdownMenuItem>Revoke API Key</DropdownMenuItem>
+
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.id)}
+              onClick={() => {
+                setMode("edit")
+                changeModalVisibility("api-key")
+              }}
             >
-              Revoke API Key
+              Edit API Key
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
