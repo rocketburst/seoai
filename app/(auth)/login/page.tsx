@@ -1,7 +1,7 @@
 import { Metadata } from "next"
 import Link from "next/link"
 
-import { UserAuthForm } from "@/components/user-auth-form"
+import { UserAuthForm } from "@/components/forms/user-auth-form"
 
 export const metadata: Metadata = {
   title: "Login - SeoAI",
