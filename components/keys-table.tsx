@@ -246,7 +246,11 @@ export const columns: ColumnDef<ApiKey>[] = [
     accessorKey: "enabled",
     header: () => <div className="">Enabled</div>,
     cell: ({ row }) => {
-      return <div className="font-medium">{`${row.getValue("enabled")}`}</div>
+      return (
+        <div className="ml-[2px] font-medium">
+          {row.getValue("enabled") ? "True" : "False"}
+        </div>
+      )
     },
   },
   {

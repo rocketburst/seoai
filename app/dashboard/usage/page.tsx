@@ -5,6 +5,7 @@ import { getCurrentUser } from "@/lib/session"
 import { DashboardHeader } from "@/components/dashboard-header"
 import { KeysTable, columns } from "@/components/keys-table"
 import { DashboardShell } from "@/components/shell"
+import { UsageAlert } from "@/components/usage-alert"
 
 export default async function UsagePage() {
   const user = await getCurrentUser()
@@ -19,6 +20,7 @@ export default async function UsagePage() {
         heading="API Usage"
         text="Get your API key to use our API endpoint here."
       />
+      <UsageAlert remaining={remainingGens} />
       <KeysTable columns={columns} data={apiKeys} />
     </DashboardShell>
   )

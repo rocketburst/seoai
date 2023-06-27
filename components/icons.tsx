@@ -1,4 +1,5 @@
 import {
+  AlertCircle,
   ArrowUpDown,
   Clipboard,
   FilePlus2,
@@ -32,6 +33,7 @@ export const Icons = {
   arrow: ArrowUpDown,
   horizontal: MoreHorizontal,
   copy: Clipboard,
+  alert: AlertCircle,
   logo: (props: LucideProps) => (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" {...props}>
       <path
