@@ -17,8 +17,10 @@ export function ModalProvider({ children }: { children: React.ReactNode }) {
         break
       case "seo":
         setIsSeoModalOpen(!isSeoModalOpen)
+        break
       case "api-key":
         setIsApiKeyModalOpen(!isApiKeyModalOpen)
+        break
     }
   }
 

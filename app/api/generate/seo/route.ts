@@ -14,6 +14,10 @@ export async function POST(req: NextRequest) {
   const { post } = seoRouteSchema.parse(body)
   const user = await getCurrentUser()
 
+  const key = req.headers.get("Authorization")?.substring(7)
+  if (!key) return NextResponse.json({ error: "No API key" }, { status: 400 })
+
+  // TODO: get user auth some other way for outside fetching
   const remaining = Number(req.headers.get("x-remaining"))
   await db.user.update({
     where: { id: user?.id },
@@ -41,5 +45,9 @@ export async function POST(req: NextRequest) {
   console.log("DATA IS: ", data)
   console.log(data.choices[0].message)
 
+  // return NextResponse.json({
+  //   message: `
+  //   { "title": "How to Build a Modal Using Tailwind CSS and Headless UI | Tutorial", "description": "Learn how to build a custom modal using Tailwind CSS and Headless UI, with easy-to-follow code snippets and step-by-step instructions. Improve accessibility and user experience on your web applications today!", "tags": ["Tailwind CSS", "Headless UI", "Modal", "Web Development", "Tutorial"] }`,
+  // })
   return NextResponse.json({ message: data.choices[0].message?.content })
 }

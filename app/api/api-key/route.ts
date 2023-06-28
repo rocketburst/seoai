@@ -9,6 +9,35 @@ const apiKeyRouteSchema = z.object({
   name: z.string().optional(),
 })
 
+export async function GET(req: NextRequest) {
+  try {
+    const user = await getCurrentUser()
+
+    if (!user)
+      return NextResponse.json(
+        { error: "Unauthorized to perform this action", key: null },
+        { status: 401 }
+      )
+
+    const key = await db.apiKey.findFirst({
+      where: { userId: user.id, enabled: true },
+    })
+
+    if (key)
+      return NextResponse.json({ success: "Key Found!", key }, { status: 200 })
+    else
+      return NextResponse.json(
+        { error: "Key not found!", key: null },
+        { status: 500 }
+      )
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Please try again", key: null },
+      { status: 500 }
+    )
+  }
+}
+
 export async function POST(req: NextRequest) {
   try {
     const user = await getCurrentUser()

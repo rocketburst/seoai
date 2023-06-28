@@ -3,6 +3,7 @@
 import { MouseEvent, useRef, useState } from "react"
 import { useGeneration } from "@/contexts/generation"
 import { useModal } from "@/contexts/modal"
+import { ApiKeyRes } from "@/types"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useSession } from "next-auth/react"
 import { useForm } from "react-hook-form"
@@ -59,6 +60,19 @@ export function PostForm() {
     const message =
       "In the above example, the execution context for the `add` function is created when it is called with arguments `10` and `20`. Inside the function, a new variable `result` is declared which is available in the function execution context."
 
+    const { key } = await fetch("/api/api-key")
+      .then((res) => res.json())
+      .then((data) => data as ApiKeyRes)
+
+    if (!key) {
+      setLoading(false)
+      return toast({
+        title: "Something went wrong.",
+        description: "Your API Key is not valid. Please try again.",
+        variant: "destructive",
+      })
+    }
+
     try {
       // TODO: uncomment in prod
       // const { message }: { message: string } = await fetch(
@@ -71,6 +85,9 @@ export function PostForm() {
       //       readTime,
       //       tags,
       //     }),
+      //     headers: {
+      //       Authorization: `Bearer ${key.key}`,
+      //     },
       //   }
       // ).then((res) => res.json())
 

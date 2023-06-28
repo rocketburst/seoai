@@ -17,6 +17,10 @@ export async function POST(req: NextRequest) {
   const { name, description, tags, readTime } = postRouteSchema.parse(body)
   const user = await getCurrentUser()
 
+  const key = req.headers.get("Authorization")?.substring(7)
+  if (!key) return NextResponse.json({ error: "No API key" }, { status: 400 })
+
+  // TODO: find other way to auth user for outside fetch
   const remaining = Number(req.headers.get("x-remaining"))
   await db.user.update({
     where: { id: user?.id },

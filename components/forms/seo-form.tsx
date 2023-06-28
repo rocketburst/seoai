@@ -3,7 +3,7 @@
 import { MouseEvent, useState } from "react"
 import { useGeneration } from "@/contexts/generation"
 import { useModal } from "@/contexts/modal"
-import { SEOGeneration } from "@/types"
+import { ApiKeyRes, SEOGeneration } from "@/types"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
@@ -51,10 +51,26 @@ export function SEOForm() {
   async function onSubmit({ post }: SeoFormData) {
     setIsSeoLoading(true)
 
+    const { key } = await fetch("/api/api-key")
+      .then((res) => res.json())
+      .then((data) => data as ApiKeyRes)
+
+    if (!key) {
+      setIsSeoLoading(false)
+      return toast({
+        title: "Something went wrong.",
+        description: "Your API Key is not valid. Please try again.",
+        variant: "destructive",
+      })
+    }
+
     // TODO: uncomment in prod
     // const { message }: { message: string } = await fetch("/api/generate/seo", {
     //   method: "POST",
     //   body: JSON.stringify({ post }),
+    //   headers: {
+    //     Authorization: `Bearer ${key.key}`,
+    //   },
     // }).then((res) => res.json())
 
     setIsSeoLoading(false)
