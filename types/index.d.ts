@@ -1,4 +1,5 @@
 import { Dispatch, SetStateAction } from "react"
+import { ApiKey } from "@prisma/client"
 
 import { Icons } from "@/components/icons"
 
@@ -46,6 +47,12 @@ export type GenerationContextType = {
 }
 
 export type Mode = "create" | "edit"
+
+export type ApiKeyRes = {
+  success: string | null
+  error: string | null
+  key: ApiKey | null
+}
 
 export type ApiKeyContextType = {
   isFetching: boolean

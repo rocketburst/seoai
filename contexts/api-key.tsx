@@ -1,13 +1,42 @@
+"use client"
+
 import { createContext, useContext, useState } from "react"
-import { ApiKeyContextType, Mode } from "@/types"
+import { useRouter } from "next/navigation"
+import { ApiKeyContextType, ApiKeyRes, Mode } from "@/types"
+
+import { toast } from "@/components/ui/use-toast"
 
 const ApiKeyContext = createContext<ApiKeyContextType | null>(null)
 
 export function ApiKeyProvider({ children }: { children: React.ReactNode }) {
   const [isFetching, setIsFetching] = useState(false)
   const [mode, setMode] = useState<Mode>("create")
+  const router = useRouter()
 
-  async function createApiKey(name: string) {}
+  async function createApiKey(name: string) {
+    const { error } = await fetch("/api/api-key", {
+      method: "POST",
+      body: JSON.stringify({ name }),
+    })
+      .then((res) => res.json())
+      .then((data) => data as ApiKeyRes)
+
+    setIsFetching(false)
+
+    if (error)
+      toast({
+        title: "Something went wrong",
+        description: error,
+        variant: "destructive",
+      })
+    else
+      toast({
+        title: "Successfully Created",
+        description: `Successfully created API key named ${name}`,
+      })
+
+    router.refresh()
+  }
 
   async function editApiKey(name: string) {}
 
