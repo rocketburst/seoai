@@ -60,10 +60,17 @@ export function MobileMenu({ user }: MobileMenuProps) {
                   </DropdownMenuItem>
                 </Link>
 
-                <Link href="/usage">
+                <Link href="/dashboard/usage">
                   <DropdownMenuItem>
                     <Icons.api className="mr-2 h-4 w-4" />
                     <span>API Usage</span>
+                  </DropdownMenuItem>
+                </Link>
+
+                <Link href="/dashboard/generations">
+                  <DropdownMenuItem>
+                    <Icons.time className="mr-2 h-4 w-4" />
+                    <span>Previous Gens</span>
                   </DropdownMenuItem>
                 </Link>
               </DropdownMenuGroup>

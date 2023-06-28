@@ -7,6 +7,12 @@ export const dashboardNav: SidebarNavItem[] = [
     href: "/dashboard",
   },
   {
+    title: "Previous",
+    icon: "time",
+    href: "/dashboard/generations",
+  },
+
+  {
     title: "Profile",
     icon: "user",
     href: "/dashboard/profile",
