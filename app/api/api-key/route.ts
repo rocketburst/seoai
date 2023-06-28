@@ -39,7 +39,43 @@ export async function POST(req: NextRequest) {
       },
     })
 
-    return NextResponse.json({ success: "Key Created!", key })
+    return NextResponse.json({ success: "Key Created!", key }, { status: 201 })
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Please try again", key: null },
+      { status: 500 }
+    )
+  }
+}
+
+export async function PATCH(req: NextRequest) {
+  try {
+    const user = await getCurrentUser()
+    const body = await req.json()
+
+    if (!user)
+      return NextResponse.json(
+        { error: "Unauthorized to perform this action", key: null },
+        { status: 401 }
+      )
+
+    const existingKey = await db.apiKey.findFirst({
+      where: { userId: user.id, enabled: true },
+    })
+
+    if (!existingKey)
+      return NextResponse.json(
+        { error: "API Key name could not be edited.", key: null },
+        { status: 500 }
+      )
+
+    const { name } = apiKeyRouteSchema.parse(body)
+    const key = await db.apiKey.update({
+      where: { id: existingKey.id },
+      data: { name },
+    })
+
+    return NextResponse.json({ success: "Key Updated!", key }, { status: 200 })
   } catch (error) {
     return NextResponse.json(
       { error: "Please try again", key: null },

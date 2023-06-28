@@ -38,7 +38,30 @@ export function ApiKeyProvider({ children }: { children: React.ReactNode }) {
     router.refresh()
   }
 
-  async function editApiKey(name: string) {}
+  async function editApiKey(name: string) {
+    const { error } = await fetch("/api/api-key", {
+      method: "PATCH",
+      body: JSON.stringify({ name }),
+    })
+      .then((res) => res.json())
+      .then((data) => data as ApiKeyRes)
+
+    setIsFetching(false)
+
+    if (error)
+      toast({
+        title: "Something went wrong",
+        description: error,
+        variant: "destructive",
+      })
+    else
+      toast({
+        title: "Successfully Edited",
+        description: `Successfully edited API key, now named ${name}`,
+      })
+
+    router.refresh()
+  }
 
   return (
     <ApiKeyContext.Provider
