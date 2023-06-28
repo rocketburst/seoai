@@ -6,7 +6,7 @@ import { db } from "@/lib/db"
 import { getCurrentUser } from "@/lib/session"
 
 const apiKeyRouteSchema = z.object({
-  name: z.string(),
+  name: z.string().optional(),
 })
 
 export async function POST(req: NextRequest) {
@@ -31,6 +31,13 @@ export async function POST(req: NextRequest) {
       )
 
     const { name } = apiKeyRouteSchema.parse(body)
+
+    if (!name)
+      return NextResponse.json(
+        { error: "No name provided.", key: null },
+        { status: 400 }
+      )
+
     const key = await db.apiKey.create({
       data: {
         userId: user.id,
@@ -70,12 +77,29 @@ export async function PATCH(req: NextRequest) {
       )
 
     const { name } = apiKeyRouteSchema.parse(body)
-    const key = await db.apiKey.update({
-      where: { id: existingKey.id },
-      data: { name },
-    })
 
-    return NextResponse.json({ success: "Key Updated!", key }, { status: 200 })
+    if (name) {
+      const key = await db.apiKey.update({
+        where: { id: existingKey.id },
+        data: { name },
+      })
+      console.log("s")
+
+      return NextResponse.json(
+        { success: "Key Updated!", key },
+        { status: 200 }
+      )
+    } else {
+      const key = await db.apiKey.update({
+        where: { id: existingKey.id },
+        data: { enabled: false },
+      })
+
+      return NextResponse.json(
+        { success: "Key revoked.", key },
+        { status: 200 }
+      )
+    }
   } catch (error) {
     return NextResponse.json(
       { error: "Please try again", key: null },

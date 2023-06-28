@@ -63,6 +63,31 @@ export function ApiKeyProvider({ children }: { children: React.ReactNode }) {
     router.refresh()
   }
 
+  async function revokeApiKey() {
+    const { error } = await fetch("/api/api-key", {
+      method: "PATCH",
+      body: JSON.stringify({}),
+    })
+      .then((res) => res.json())
+      .then((data) => data as ApiKeyRes)
+
+    setIsFetching(false)
+
+    if (error)
+      toast({
+        title: "Something went wrong",
+        description: error,
+        variant: "destructive",
+      })
+    else
+      toast({
+        title: "Successfully Revoked",
+        description: `Successfully revoked API Key`,
+      })
+
+    router.refresh()
+  }
+
   return (
     <ApiKeyContext.Provider
       value={{
@@ -72,6 +97,7 @@ export function ApiKeyProvider({ children }: { children: React.ReactNode }) {
         mode,
         setMode,
         editApiKey,
+        revokeApiKey,
       }}
     >
       {children}
@@ -80,8 +106,23 @@ export function ApiKeyProvider({ children }: { children: React.ReactNode }) {
 }
 
 export function useApiKey() {
-  const { isFetching, setIsFetching, createApiKey, mode, setMode, editApiKey } =
-    useContext(ApiKeyContext) as ApiKeyContextType
+  const {
+    isFetching,
+    setIsFetching,
+    createApiKey,
+    mode,
+    setMode,
+    editApiKey,
+    revokeApiKey,
+  } = useContext(ApiKeyContext) as ApiKeyContextType
 
-  return { isFetching, setIsFetching, createApiKey, mode, setMode, editApiKey }
+  return {
+    isFetching,
+    setIsFetching,
+    createApiKey,
+    mode,
+    setMode,
+    editApiKey,
+    revokeApiKey,
+  }
 }

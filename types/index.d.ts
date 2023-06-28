@@ -61,4 +61,5 @@ export type ApiKeyContextType = {
   setMode: Dispatch<SetStateAction<Mode>>
   createApiKey: (name: string) => Promise<void>
   editApiKey: (name: string) => Promise<void>
+  revokeApiKey: () => Promise<void>
 }

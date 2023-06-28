@@ -260,7 +260,7 @@ export const columns: ColumnDef<ApiKey>[] = [
     id: "actions",
     cell: ({ row }) => {
       const { changeModalVisibility } = useModal()
-      const { setMode } = useApiKey()
+      const { setMode, revokeApiKey } = useApiKey()
 
       return (
         <DropdownMenu>
@@ -273,7 +273,9 @@ export const columns: ColumnDef<ApiKey>[] = [
 
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem>Revoke API Key</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => revokeApiKey()}>
+              Revoke API Key
+            </DropdownMenuItem>
 
             <DropdownMenuItem
               onClick={() => {
