@@ -27,12 +27,16 @@ export default withAuth(
       if (!success) {
         const now = Date.now()
         const retryAfter = Math.floor((reset - now) / 1000)
-        return new NextResponse("Too Many Requests", {
-          status: 429,
-          headers: {
-            ["retry-after"]: `${retryAfter}`,
-          },
-        })
+
+        return NextResponse.json(
+          { error: "Too many requests" },
+          {
+            status: 429,
+            headers: {
+              ["retry-after"]: `${retryAfter}`,
+            },
+          }
+        )
       }
 
       const newHeaders = new Headers(req.headers)

@@ -17,6 +17,12 @@ export async function POST(req: NextRequest) {
   const { name, description, tags, readTime } = postRouteSchema.parse(body)
   const user = await getCurrentUser()
 
+  if (!user)
+    return NextResponse.json(
+      { error: "Unauthorized to perform this action" },
+      { status: 401 }
+    )
+
   const key = req.headers.get("Authorization")?.substring(7)
   if (!key) return NextResponse.json({ error: "No API key" }, { status: 400 })
 
@@ -48,6 +54,16 @@ export async function POST(req: NextRequest) {
 
   console.log("DATA IS: ", data)
   console.log(data.choices[0].message)
+
+  const message = data.choices[0].message?.content as string
+
+  await db.generation.create({
+    data: {
+      content: message,
+      type: "POST",
+      userId: user.id,
+    },
+  })
 
   return NextResponse.json({ message: data.choices[0].message?.content })
 }

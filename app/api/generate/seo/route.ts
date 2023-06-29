@@ -14,6 +14,12 @@ export async function POST(req: NextRequest) {
   const { post } = seoRouteSchema.parse(body)
   const user = await getCurrentUser()
 
+  if (!user)
+    return NextResponse.json(
+      { error: "Unauthorized to perform this action" },
+      { status: 401 }
+    )
+
   const key = req.headers.get("Authorization")?.substring(7)
   if (!key) return NextResponse.json({ error: "No API key" }, { status: 400 })
 
@@ -45,9 +51,18 @@ export async function POST(req: NextRequest) {
   console.log("DATA IS: ", data)
   console.log(data.choices[0].message)
 
-  // return NextResponse.json({
-  //   message: `
-  //   { "title": "How to Build a Modal Using Tailwind CSS and Headless UI | Tutorial", "description": "Learn how to build a custom modal using Tailwind CSS and Headless UI, with easy-to-follow code snippets and step-by-step instructions. Improve accessibility and user experience on your web applications today!", "tags": ["Tailwind CSS", "Headless UI", "Modal", "Web Development", "Tutorial"] }`,
-  // })
-  return NextResponse.json({ message: data.choices[0].message?.content })
+  const message = data.choices[0].message?.content as string
+
+  // const message = `
+  //   { "title": "How to Build a Modal Using Tailwind CSS and Headless UI | Tutorial", "description": "Learn how to build a custom modal using Tailwind CSS and Headless UI, with easy-to-follow code snippets and step-by-step instructions. Improve accessibility and user experience on your web applications today!", "tags": ["Tailwind CSS", "Headless UI", "Modal", "Web Development", "Tutorial"] }`
+
+  await db.generation.create({
+    data: {
+      content: message,
+      type: "SEO",
+      userId: user.id,
+    },
+  })
+
+  return NextResponse.json({ message })
 }
