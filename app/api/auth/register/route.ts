@@ -1,8 +1,13 @@
 import { NextRequest, NextResponse } from "next/server"
 import { hash } from "bcryptjs"
+import * as z from "zod"
 
 import { db } from "@/lib/db"
-import { registerSchema } from "@/lib/validations/register"
+
+const registerSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(8),
+})
 
 export async function POST(req: NextRequest) {
   const body = await req.json()
