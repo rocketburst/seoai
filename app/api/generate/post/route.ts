@@ -16,13 +16,6 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
     const { name, description, tags, readTime } = postRouteSchema.parse(body)
-    const user = await getCurrentUser()
-
-    if (!user)
-      return NextResponse.json(
-        { error: "Unauthorized to perform this action" },
-        { status: 401 }
-      )
 
     const key = req.headers.get("Authorization")?.substring(7)
     if (!key)
@@ -30,11 +23,11 @@ export async function POST(req: NextRequest) {
         { error: "No API key", message: null },
         { status: 400 }
       )
+    const { userId } = await db.apiKey.findUniqueOrThrow({ where: { key } })
 
-    // TODO: find other way to auth user for outside fetch
     const remaining = Number(req.headers.get("x-remaining"))
     await db.user.update({
-      where: { id: user?.id },
+      where: { id: userId },
       data: { remainingGens: remaining },
     })
 
@@ -66,7 +59,7 @@ export async function POST(req: NextRequest) {
       data: {
         content: message,
         type: "POST",
-        userId: user.id,
+        userId: userId,
       },
     })
 

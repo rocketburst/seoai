@@ -3,7 +3,6 @@ import * as z from "zod"
 
 import { db } from "@/lib/db"
 import { openai } from "@/lib/openai"
-import { getCurrentUser } from "@/lib/session"
 
 export const seoRouteSchema = z.object({
   post: z.string().min(2),
@@ -13,13 +12,6 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
     const { post } = seoRouteSchema.parse(body)
-    const user = await getCurrentUser()
-
-    if (!user)
-      return NextResponse.json(
-        { error: "Unauthorized to perform this action", message: null },
-        { status: 401 }
-      )
 
     const key = req.headers.get("Authorization")?.substring(7)
     if (!key)
@@ -28,10 +20,12 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       )
 
+    const { userId } = await db.apiKey.findUniqueOrThrow({ where: { key } })
+
     // TODO: get user auth some other way for outside fetching
     const remaining = Number(req.headers.get("x-remaining"))
     await db.user.update({
-      where: { id: user?.id },
+      where: { id: userId },
       data: { remainingGens: remaining },
     })
 
@@ -65,7 +59,7 @@ export async function POST(req: NextRequest) {
       data: {
         content: message,
         type: "SEO",
-        userId: user.id,
+        userId: userId,
       },
     })
 
