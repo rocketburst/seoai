@@ -9,7 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { KeyComponent } from "@/components/keys-table"
+import { KeyComponent } from "@/components/tables/keys-table"
 
 interface MobileKeysTableProps {
   data: ApiKey[]

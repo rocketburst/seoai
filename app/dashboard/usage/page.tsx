@@ -3,9 +3,9 @@ import { User } from "@prisma/client"
 import { db } from "@/lib/db"
 import { getCurrentUser } from "@/lib/session"
 import { DashboardHeader } from "@/components/dashboard-header"
-import { KeysTable, columns } from "@/components/keys-table"
-import { MobileKeysTable } from "@/components/mobile-keys-table"
 import { DashboardShell } from "@/components/shell"
+import { KeysTable, columns } from "@/components/tables/keys-table"
+import { MobileKeysTable } from "@/components/tables/mobile-keys-table"
 import { UsageAlert } from "@/components/usage-alert"
 
 export default async function UsagePage() {
