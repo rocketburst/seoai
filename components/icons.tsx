@@ -2,6 +2,8 @@ import {
   AlertCircle,
   ArrowRight,
   ArrowUpDown,
+  ChevronLeft,
+  ChevronRight,
   Clipboard,
   FilePlus2,
   History,

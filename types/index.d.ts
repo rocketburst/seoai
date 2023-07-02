@@ -3,7 +3,7 @@ import { ApiKey } from "@prisma/client"
 
 import { Icons } from "@/components/icons"
 
-export interface NavItem {
+export type NavItem = {
   title: string
   href?: string
   disabled?: boolean
@@ -14,8 +14,21 @@ export type SidebarNavItem = {
   title: string
   disabled?: boolean
   external?: boolean
-  icon: keyof typeof Icons
-  href: string
+  icon?: keyof typeof Icons
+} & (
+  | {
+      href: string
+      items?: never
+    }
+  | {
+      href?: string
+      items: NavLink[]
+    }
+)
+
+export type DocsConfig = {
+  mainNav: NavItem[]
+  sidebarNav: SidebarNavItem[]
 }
 
 export type ModalType = "seo" | "post" | "api-key"
