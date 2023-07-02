@@ -3,7 +3,6 @@ import * as z from "zod"
 
 import { db } from "@/lib/db"
 import { openai } from "@/lib/openai"
-import { getCurrentUser } from "@/lib/session"
 
 const postRouteSchema = z.object({
   name: z.string().min(2),
