@@ -10,6 +10,11 @@ export type NavItem = {
   external?: boolean
 }
 
+export type NavLink = {
+  title: string
+  href: string
+}
+
 export type SidebarNavItem = {
   title: string
   disabled?: boolean
