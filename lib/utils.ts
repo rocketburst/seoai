@@ -1,3 +1,4 @@
+import { env } from "process"
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 
@@ -15,4 +16,8 @@ export function getInitials(name: string) {
   })
 
   return initials
+}
+
+export function absoluteUrl(path: string) {
+  return `${env.NEXT_PUBLIC_APP_URL}${path}`
 }

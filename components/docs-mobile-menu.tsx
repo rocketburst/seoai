@@ -4,7 +4,6 @@ import Link from "next/link"
 import { SidebarNavItem } from "@/types"
 
 import { cn } from "@/lib/utils"
-import { buttonVariants } from "@/components/ui/button"
 import {
   Sheet,
   SheetContent,
@@ -13,50 +12,15 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet"
-import { HeaderAvatar } from "@/components/header-avatar"
 import { Icons } from "@/components/icons"
 
 interface DocsMobileMenuProps {
-  user:
-    | ({
-        id: string
-      } & {
-        name?: string | null | undefined
-        email?: string | null | undefined
-        image?: string | null | undefined
-      })
-    | undefined
   items: SidebarNavItem[]
 }
 
-export function DocsMobileMenu({ user, items }: DocsMobileMenuProps) {
+export function DocsMobileMenu({ items }: DocsMobileMenuProps) {
   return (
     <div className="flex items-center justify-center space-x-3 md:hidden">
-      {user ? (
-        <div
-          className={cn(
-            buttonVariants({
-              size: "sm",
-              variant: "ghost",
-            }),
-            "cursor-pointer hover:bg-inherit"
-          )}
-        >
-          <HeaderAvatar img={user.image as string} name={user.name as string} />
-        </div>
-      ) : (
-        <Link href="/login">
-          <div
-            className={buttonVariants({
-              size: "sm",
-              variant: "ghost",
-            })}
-          >
-            Login
-          </div>
-        </Link>
-      )}
-
       <Sheet>
         <SheetTrigger asChild>
           <Icons.menu />

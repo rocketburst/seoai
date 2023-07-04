@@ -6,9 +6,10 @@ export const docsConfig: DocsConfig = {
       title: "Dashboard",
       href: "/dashboard",
     },
+
     {
-      title: "Docs",
-      href: "/docs",
+      title: "Profile",
+      href: "/dashboard/profile",
     },
   ],
   sidebarNav: [
@@ -26,11 +27,11 @@ export const docsConfig: DocsConfig = {
       items: [
         {
           title: "Generate SEO",
-          href: "/docs/generate-seo",
+          href: "/docs/generate/seo",
         },
         {
           title: "Generate Post",
-          href: "/docs/generate-post",
+          href: "/docs/generate/post",
         },
       ],
     },

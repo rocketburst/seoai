@@ -1,3 +1,4 @@
+import tailwindTypography from "@tailwindcss/typography"
 import { Config } from "tailwindcss"
 import { fontFamily } from "tailwindcss/defaultTheme"
 
@@ -73,5 +74,5 @@ export default {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [require("tailwindcss-animate"), tailwindTypography],
 } satisfies Config
