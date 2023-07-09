@@ -4,7 +4,7 @@ import * as z from "zod"
 import { db } from "@/lib/db"
 import { openai } from "@/lib/openai"
 
-export const seoRouteSchema = z.object({
+const seoRouteSchema = z.object({
   post: z.string().min(2),
 })
 
