@@ -3,7 +3,7 @@ title: Post
 description: How to generate a blog post with SeoAI.
 ---
 
-This is the documentation for using SeoAI endpoints.
+This page will teach you how to generate a blog post with SeoAI with JavaScript.
 
 <Callout>
 
@@ -11,26 +11,84 @@ To use SeoAI services, you need an API Key. Click [here](/dashboard/usage) to ge
 
 </Callout>
 
-## Features
+## Example Request
 
-Select a feature below to learn more about it.
+If you just want to copy and paste the code for an actual request, here is an actual implementation in TypeScript:
 
-<div className="grid sm:grid-cols-2 gap-4 mt-6">
+```ts
+import * as z from "zod"
 
-<Card href="/docs/generate/seo">
+const reqBodySchema = z.object({
+  name: z.string().min(2),
+  description: z.string().min(20),
+  readTime: z.number(),
+  tags: z.array(z.string()).optional(),
+})
 
-### SEO
+const resSchema = z.object({
+  message: z.string().nullable(),
+  error: z.string().nullable(),
+})
 
-Learn how to generate SEO with SeoAI.
+const body = reqBodySchema.parse({
+  name: "insert name here",
+  description: "insert description here",
+  readTime: "insert readTime here",
+  tags: "insert tags here",
+})
 
-</Card>
+const { message, error } = await fetch(
+  "http://localhost:3000/api/generate/post",
+  {
+    method: "POST",
+    body: JSON.stringify(body),
+    headers: {
+      Authorization: `Bearer ${process.env.API_KEY}`,
+    },
+  }
+)
+  .then((res) => res.json())
+  .then((data) => resSchema.parse(data))
 
-<Card href="/docs/generate/post">
+// logic with message and error
+```
 
-### Post
+## Getting the Data
 
-Learn how to generate a blog post with SeoAI.
+### API Endpoint
 
-</Card>
+The API endpoint is:
 
-</div>
+```txt
+POST http://localhost:3000/api/generate/post
+```
+
+### Request
+
+The following [zod](https://zod.dev/) schema would represent the request body for generating SEO:
+
+```ts
+const reqBodySchema = z.object({
+  name: z.string().min(2),
+  description: z.string().min(20),
+  readTime: z.number(),
+  tags: z.array(z.string()).optional(),
+})
+```
+
+You would also need to pass the following header in the request:
+
+```txt
+Authorization: `Bearer ${API_KEY}`,
+```
+
+### Response
+
+The following [zod](https://zod.dev/) schema would represent the resoinse from the API:
+
+```ts
+const resSchema = z.object({
+  message: z.string().nullable(),
+  error: z.string().nullable(),
+})
+```
