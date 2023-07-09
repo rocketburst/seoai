@@ -64,14 +64,13 @@ export function SEOForm() {
       })
     }
 
-    // TODO: uncomment in prod
-    // const { message }: { message: string } = await fetch("/api/generate/seo", {
-    //   method: "POST",
-    //   body: JSON.stringify({ post }),
-    //   headers: {
-    //     Authorization: `Bearer ${key.key}`,
-    //   },
-    // }).then((res) => res.json())
+    const { message }: { message: string } = await fetch("/api/generate/seo", {
+      method: "POST",
+      body: JSON.stringify({ post }),
+      headers: {
+        Authorization: `Bearer ${key.key}`,
+      },
+    }).then((res) => res.json())
 
     setIsSeoLoading(false)
 

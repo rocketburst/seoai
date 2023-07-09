@@ -22,7 +22,6 @@ export async function POST(req: NextRequest) {
 
     const { userId } = await db.apiKey.findUniqueOrThrow({ where: { key } })
 
-    // TODO: get user auth some other way for outside fetching
     const remaining = Number(req.headers.get("x-remaining"))
     await db.user.update({
       where: { id: userId },

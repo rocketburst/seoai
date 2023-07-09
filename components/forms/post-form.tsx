@@ -74,22 +74,21 @@ export function PostForm() {
     }
 
     try {
-      // TODO: uncomment in prod
-      // const { message }: { message: string } = await fetch(
-      //   `/api/generate/post?id=${session?.user.id}`,
-      //   {
-      //     method: "POST",
-      //     body: JSON.stringify({
-      //       name,
-      //       description,
-      //       readTime,
-      //       tags,
-      //     }),
-      //     headers: {
-      //       Authorization: `Bearer ${key.key}`,
-      //     },
-      //   }
-      // ).then((res) => res.json())
+      const { message }: { message: string } = await fetch(
+        `/api/generate/post?id=${session?.user.id}`,
+        {
+          method: "POST",
+          body: JSON.stringify({
+            name,
+            description,
+            readTime,
+            tags,
+          }),
+          headers: {
+            Authorization: `Bearer ${key.key}`,
+          },
+        }
+      ).then((res) => res.json())
 
       const file = new File([message], "post", { type: "text/plain" })
       const url = URL.createObjectURL(file)
