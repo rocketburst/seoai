@@ -17,11 +17,13 @@ export default async function UsagePage() {
 
   return (
     <DashboardShell>
+      {/* @ts-expect-error Server Component */}
       <DashboardHeader heading="API Usage" text="Get your API key here." />
 
       <div className="pb-10">
         <UsageAlert remaining={remainingGens} />
         <KeysTable columns={columns} data={apiKeys} />
+        {/* @ts-expect-error Server Component */}
         <MobileKeysTable data={apiKeys} />
       </div>
     </DashboardShell>

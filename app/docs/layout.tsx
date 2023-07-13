@@ -9,6 +9,7 @@ interface DocsLayoutProps {
 export default function DocsLayout({ children }: DocsLayoutProps) {
   return (
     <div className="flex min-h-screen flex-col">
+      {/* @ts-expect-error Server Component */}
       <DocsHeader />
 
       <div className="container flex-1">

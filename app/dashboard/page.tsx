@@ -5,6 +5,7 @@ import { DashboardShell } from "@/components/shell"
 export default function DashboardPage() {
   return (
     <DashboardShell>
+      {/* @ts-expect-error Server Component */}
       <DashboardHeader
         heading="Generate"
         text="Generate a new blog post or SEO for an existing post."
