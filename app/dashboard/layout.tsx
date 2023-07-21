@@ -17,7 +17,6 @@ export default async function DashboardLayout({
 
   return (
     <div className="flex min-h-screen flex-col space-y-6">
-      {/* @ts-expect-error Server Component */}
       <SiteHeader />
 
       <div className="container grid flex-1 gap-12 md:grid-cols-[200px_1fr]">

@@ -20,7 +20,6 @@ export default async function DashboardPage() {
 
   return (
     <DashboardShell>
-      {/* @ts-expect-error Server Component */}
       <DashboardHeader
         heading="Previous Generations"
         text="See all of your previous generations here."

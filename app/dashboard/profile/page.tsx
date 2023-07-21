@@ -13,7 +13,6 @@ export default async function ProfilePage() {
 
   return (
     <DashboardShell>
-      {/* @ts-expect-error Server Component */}
       <DashboardHeader
         heading="Profile"
         text="Edit your profile information here."

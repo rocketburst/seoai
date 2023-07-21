@@ -7,7 +7,6 @@ interface LoginLayoutProps {
 export default function LoginLayout({ children }: LoginLayoutProps) {
   return (
     <>
-      {/* @ts-expect-error Server Component */}
       <SiteHeader />
       {children}
     </>

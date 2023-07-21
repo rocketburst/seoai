@@ -83,7 +83,7 @@ export function MobileMenu({ user }: MobileMenuProps) {
             onClick={() => setTheme(theme === "light" ? "dark" : "light")}
           >
             {theme === "light" ? (
-              <Icons.sun classname="mr-2 h-4 w-4" />
+              <Icons.sun className="mr-2 h-4 w-4" />
             ) : (
               <Icons.moon className="mr-2 h-4 w-4" />
             )}
